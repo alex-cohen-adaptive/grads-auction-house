@@ -3,51 +3,87 @@ package com.weareadaptive.auction.controller;
 import com.github.javafaker.Faker;
 import com.weareadaptive.auction.TestData;
 import com.weareadaptive.auction.controller.dto.CreateAuctionRequest;
+import com.weareadaptive.auction.controller.dto.CreateBidRequest;
 import com.weareadaptive.auction.controller.dto.CreateUserRequest;
+import com.weareadaptive.auction.controller.dto.UpdateUserRequest;
+import com.weareadaptive.auction.model.Bid;
+import com.weareadaptive.auction.model.User;
 import com.weareadaptive.auction.service.AuctionLotService;
 import com.weareadaptive.auction.service.UserService;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import static com.weareadaptive.auction.TestData.ADMIN_AUTH_TOKEN;
+import static com.weareadaptive.auction.TestData.USER_AUTH_TOKEN;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.*;
+import static java.lang.String.format;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuctionControllerTest extends AbstractTestController {
-    @Autowired
-    private AuctionLotService auctionLotService;
-    @Autowired
-    private TestData testData;
-    @LocalServerPort
-    private int port;
-    private String uri;
-    private final Faker faker = new Faker();
+class AuctionControllerTest extends TestController {
 
-
-    public AuctionControllerTest() {
-        super();
+    @BeforeEach
+    public void initialiseRestAssuredMockMvcStandalone() {
+        uri = "http://localhost:" + port;
     }
+
+    //invalif token
+    //create a bid
+    //create a bid owner cannot place bid
+    //close auction valid
+    //close auction already closed
+    //close auction onlt owner can do this
+    //close auction summary
+    //closed auction summary auction open
+
 
     @DisplayName("create should return a bad request when the auction already exists")
     @Test
-    public void create_shouldReturnBadRequestIfAuctionExist() {
+    public void create_shouldReturn_400_IfAuctionExist() {
         var createRequest = new CreateAuctionRequest(
-                testData.
-                testData.user1().getUsername(),
-                "dasfasdf",
-                testData.user1().getFirstName(),
-                testData.user1().getLastName(),
-                testData.user1().getOrganisation());
+                testData.auction1().getOwner(),
+                testData.auction1().getSymbol(),
+                testData.auction1().getMinPrice(),
+                testData.auction1().getQuantity()
+        );
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .contentType(ContentType.JSON)
+                .body(createRequest)
+                .when()
+                .post("/auctions")
+                .then()
+                .statusCode(BAD_REQUEST.value());
+        //.body("message", containsString("already exist"));
+        //@formatter:on
+    }
+
+    @DisplayName("create should create and return the new user")
+    @Test
+    public void create_shouldReturnAuctionIfCreated() {
+        var name = faker.stock().nyseSymbol();
+
+        var createRequest = new CreateAuctionRequest(
+                testData.auction1().getOwner(),
+                name,
+                testData.auction1().getMinPrice(),
+                testData.auction1().getQuantity()
+        );
+
 
         //@formatter:off
         given()
@@ -56,33 +92,175 @@ class AuctionControllerTest extends AbstractTestController {
                 .contentType(ContentType.JSON)
                 .body(createRequest)
                 .when()
-                .post("/users")
+                .post("/auctions")
                 .then()
-                .statusCode(BAD_REQUEST.value())
-                .body("message", containsString("already exist"));
+                .statusCode(HttpStatus.CREATED.value())
+                .body("id", greaterThan(0))
+                .body("owner", equalTo(createRequest.owner().getEmail()))
+                .body("symbol", equalTo(createRequest.symbol()))
+                .body("minPrice", equalTo(createRequest.minPrice()))
+                .body("quantity", equalTo(createRequest.quantity())
+                );
         //@formatter:on
     }
 
 
-
+    @DisplayName("get should when return 404 when user doesn't")
     @Test
-    void create() {
+    public void get_shouldReturn_404_WhenAuctionNotFound() {
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .pathParam("id", INVALID_ID)
+                .when()
+                .get("/auctions/{id}")
+                .then()
+                .statusCode(NOT_FOUND.value());
+        //@formatter:on
+    }
+
+
+    @DisplayName("get should when return 400 if invalid id")
+    @Test
+    public void get_shouldReturn_400_IfInvalidId() {
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .pathParam("id", INVALID_ID)
+                .when()
+                .get("/auctions/{id}")
+                .then()
+                .statusCode(NOT_FOUND.value());
+        //@formatter:on
+    }
+
+    @DisplayName("get should return an auction")
+    @Test
+    public void get_shouldReturnAuctionIfExists() {
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .pathParam("id", testData.auction1().getId())
+                .when()
+                .get("/auction/{id}")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("id", equalTo(testData.auction1().getId()))
+                .body("symbol", equalTo(testData.auction1().getSymbol()))
+                .body("quantity", equalTo(testData.auction1().getQuantity()))
+                .body("minPrice", equalTo(testData.auction1().getMinPrice()));
+        //@formatter:on
+    }
+
+    @DisplayName("get should return a list of auctions")
+    @Test
+    public void getAllAuctions_shouldReturnIfExists() {
+        var find1 = format("find { it.id == %s }.", testData.auction1().getId());
+        var find2 = format("find { it.id == %s }.", testData.auction2().getId());
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .when()
+                .get("/auction/")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body(find1 + "id", equalTo(testData.auction1().getId()))
+                .body(find1 + "symbol", equalTo(testData.auction1().getSymbol()))
+                .body(find1 + "quantity", equalTo(testData.auction1().getQuantity()))
+                .body(find1 + "minPrice", equalTo(testData.auction1().getMinPrice()))
+
+                .body(find2 + "id", equalTo(testData.auction2().getId()))
+                .body(find2 + "symbol", equalTo(testData.auction2().getSymbol()))
+                .body(find2 + "quantity", equalTo(testData.auction2().getQuantity()))
+                .body(find2 + "minPrice", equalTo(testData.auction2().getMinPrice()));
+        //@formatter:on
+    }
+
+    @DisplayName("should be reg user to access api")
+    @Test
+    public void action_shouldReturn_403_WhenNotAUser() {
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+                .pathParam("id", INVALID_ID)
+                .when()
+                .get("/auction/{id}")
+                .then()
+                .statusCode(FORBIDDEN.value());
+        //@formatter:on
+    }
+
+    @DisplayName("should create a bid if valid")
+    @Test
+    void bid_shouldCreateBid() {
+        var user = testData.user2();
+        var createRequest = new CreateBidRequest(
+                user,
+
+
+        );
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .contentType(ContentType.JSON)
+                .body(createRequest)
+                .when()
+                .post("/auctions")
+                .then()
+                .statusCode(BAD_REQUEST.value());
+        //.body("message", containsString("already exist"));
+        //@formatter:on
     }
 
     @Test
-    void get() {
+    void bid_shouldReturn_404_IfInvalidAuctionId() {
     }
 
     @Test
-    void getAllAuctions() {
+    void bid_shouldReturn_403_IfOwner() {
     }
 
     @Test
-    void bid() {
+    void getAllBids_shouldReturnIfExists() {
+    }
+
+
+    @Test
+    void getAllBids_shouldReturn_403_IfNotOwner() {
     }
 
     @Test
-    void getAllBids() {
+    void getAllBids_shouldReturn_404_IfNoBids() {
+    }
+
+
+    @Test
+    void close_shouldClose() {
+    }
+
+
+    @Test
+    void close_shouldReturn_403_IfNotOwner() {
+    }
+
+    @Test
+    void close_shouldReturn_403_IfAlreadyClosed() {
+    }
+
+    @Test
+    void close_shouldReturn_400_IfInvalidId() {
+    }
+
+    @Test
+    void close_shouldReturn_404_IfAuctionNotFound() {
     }
 
     @Test

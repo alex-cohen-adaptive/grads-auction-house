@@ -95,4 +95,30 @@ public class SecurityTest {
       .statusCode(HttpStatus.FORBIDDEN.value());
     //@formatter:on
   }
+
+  @Test
+  public void shouldBeAUser() {
+    //@formatter:off
+    given()
+      .baseUri(uri)
+      .header(AUTHORIZATION, testData.user1Token())
+    .when()
+      .get("/test/userOnly")
+    .then()
+      .statusCode(HttpStatus.OK.value());
+    //@formatter:on
+  }
+
+  @Test
+  public void shouldBeAUser1() {
+    //@formatter:off
+    given()
+      .baseUri(uri)
+      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+    .when()
+      .get("/test/userOnly")
+    .then()
+      .statusCode(HttpStatus.FORBIDDEN.value());
+    //@formatter:on
+  }
 }

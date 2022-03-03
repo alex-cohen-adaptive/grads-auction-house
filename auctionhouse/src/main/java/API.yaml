@@ -5,7 +5,8 @@
       symbol: String
       minPrice: double
       quantity: integer
-
+    header:
+      token: String
     response:
       201: Resource created! <auction>
       400: Invalid body params / auction already created using that symbol
@@ -13,18 +14,21 @@
       403: admin not allowed!
       404:
 /auction/get/{id}:
-  put:
+  get:
     body:
       token: String
+    header:
+      token: String
     response:
-      200: <auction opening summary>
+      200: auction
       400: Invalid id/token type
       401: Unauthorized token invalid
       403: Admin not allowed!
       404: Requested auction not found
 /auction/getall:
-  put:
+  get:
     body:
+    header:
       token: String
     response:
       200: Stream<auction>
@@ -47,9 +51,10 @@
       404: Cannot find the requested auction
 
 # only the owner can do this
-/auction/bid/getall:
-  put:
+/auction/bid/getall/{auctionId):
+  get:
     body:
+    header:
       token: String
     response:
       200: Stream<bids>
@@ -63,7 +68,8 @@
 /auction/{id}/close:
   post:
     body:
-      token: string
+    header:
+      token: String
   response:
     200: <Successfully closed!> (maybe return object, but not necessary)
     400: Invalid Id/token type provided
@@ -74,11 +80,13 @@
 /auction/{id}/summary:
   put:
     body:
-      token: string
-        200: Auction Summary String
-        400: Invalid Id/token type provided
-        401: Unauthorized token invalid
-        403: admin not allowed
-        404: Could not find auction based on id
+    header:
+      token: String
+    response:
+      200: Auction Summary String
+      400: Invalid Id/token type provided
+      401: Unauthorized token invalid
+      403: admin not allowed
+      404: Could not find auction based on id
 
 

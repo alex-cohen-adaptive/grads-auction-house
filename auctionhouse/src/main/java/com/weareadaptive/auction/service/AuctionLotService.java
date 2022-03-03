@@ -5,10 +5,7 @@ import static java.lang.String.format;
 import com.weareadaptive.auction.controller.dto.AuctionResponse;
 import com.weareadaptive.auction.controller.dto.BidResponse;
 import com.weareadaptive.auction.controller.dto.CreateUserRequest;
-import com.weareadaptive.auction.model.AuctionLot;
-import com.weareadaptive.auction.model.AuctionState;
-import com.weareadaptive.auction.model.Bid;
-import com.weareadaptive.auction.model.UserState;
+import com.weareadaptive.auction.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +28,32 @@ public class AuctionLotService {
     }
 
 
-    public AuctionLot create(CreateUserRequest user) {
-        return null;
+    public AuctionLot create(int id, String symbol, int quantity, double minPrice) {
+        //todo check if null
+        var user = userState.get(id);
+        var auctionLot = new AuctionLot(
+                auctionState.nextId(),
+                user,
+                symbol,
+                quantity,
+                minPrice
+        );
+        auctionState.add(auctionLot);
+
+        return auctionLot;
+    }
+    //for testing purposes only
+    public AuctionLot create(User user, String symbol, int quantity, double minPrice) {
+        var auctionLot = new AuctionLot(
+                auctionState.nextId(),
+                user,
+                symbol,
+                quantity,
+                minPrice
+        );
+        auctionState.add(auctionLot);
+
+        return auctionLot;
     }
 
 

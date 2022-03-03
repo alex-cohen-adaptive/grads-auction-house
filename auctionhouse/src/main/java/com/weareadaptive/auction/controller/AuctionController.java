@@ -5,6 +5,7 @@ import com.weareadaptive.auction.controller.dto.BidResponse;
 import com.weareadaptive.auction.controller.dto.CreateUserRequest;
 import com.weareadaptive.auction.model.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,11 +14,11 @@ import static com.weareadaptive.auction.controller.Mapper.map;
 
 @RestController
 @RequestMapping("/auctions")
-
+@PreAuthorize("hasRole('ROLE_USER')")
 public class AuctionController {
-//    1. check if authenticated w/ token
-//    2. process request
-//    3. spit out result
+    //    1. check if authenticated w/ token
+    //    2. process request
+    //    3. spit out result
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -25,15 +26,15 @@ public class AuctionController {
         return null;
     }
 
-    @PutMapping("{id}")
+    @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public AuctionResponse get(@Valid int id ) {
         return null;
     }
 
-    @PutMapping("{id}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public AuctionResponse getAllAuctions(@Valid int id) {
+    public AuctionResponse getAllAuctions() {
         return null;
     }
 
@@ -44,13 +45,20 @@ public class AuctionController {
         return null;
     }
 
-    @PutMapping("{id}")
+    @GetMapping("{auctionId}")
     @ResponseStatus(HttpStatus.OK)
-    public BidResponse getAllBids(@Valid int id) {
+    public BidResponse getAllBids(@Valid int auctionId) {
         return null;
     }
 
-    @PostMapping("{id}/summary")
+    @PostMapping("{id}/close")
+    @ResponseStatus(HttpStatus.OK)
+    public BidResponse closeAuction(@Valid int id) {
+        return null;
+    }
+
+
+    @GetMapping("{id}/summary")
     @ResponseStatus(HttpStatus.OK)
     public BidResponse getAuctionSummary(@Valid int id) {
         return null;

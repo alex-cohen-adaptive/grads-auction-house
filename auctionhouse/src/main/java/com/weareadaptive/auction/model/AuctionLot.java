@@ -1,5 +1,8 @@
 package com.weareadaptive.auction.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.math.BigDecimal.valueOf;

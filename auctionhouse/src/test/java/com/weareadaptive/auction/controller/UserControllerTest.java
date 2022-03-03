@@ -13,37 +13,18 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import com.github.javafaker.Faker;
 import com.weareadaptive.auction.TestData;
 import com.weareadaptive.auction.controller.dto.CreateUserRequest;
 import com.weareadaptive.auction.controller.dto.UpdateUserRequest;
-import com.weareadaptive.auction.service.UserService;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest {
-  public static final int INVALID_USER_ID = 99999;
+public class UserControllerTest extends TestController {
 
-  @Autowired
-  private UserService userService;
-  @Autowired
-  private TestData testData;
-  @LocalServerPort
-  private int port;
-  private String uri;
-  private final Faker faker = new Faker();
-
-  @BeforeEach
-  public void initialiseRestAssuredMockMvcStandalone() {
-    uri = "http://localhost:" + port;
-  }
 
   @DisplayName("create should return a bad request when the username is duplicated")
   @Test
@@ -105,7 +86,7 @@ public class UserControllerTest {
         given()
             .baseUri(uri)
             .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-            .pathParam("id", INVALID_USER_ID)
+            .pathParam("id", INVALID_ID)
         .when()
             .get("/users/{id}")
         .then()
@@ -120,7 +101,7 @@ public class UserControllerTest {
         given()
             .baseUri(uri)
             .header(AUTHORIZATION, testData.user1Token())
-            .pathParam("id", INVALID_USER_ID)
+            .pathParam("id", INVALID_ID)
         .when()
             .get("/users/{id}")
         .then()
@@ -162,7 +143,7 @@ public class UserControllerTest {
             .baseUri(uri)
             .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
             .contentType(ContentType.JSON)
-            .pathParam("id", INVALID_USER_ID)
+            .pathParam("id", INVALID_ID)
             .body(updateRequest)
         .when()
             .put("/users/{id}")
@@ -245,7 +226,7 @@ public class UserControllerTest {
         given()
             .baseUri(uri)
             .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-            .pathParam("id", INVALID_USER_ID)
+            .pathParam("id", INVALID_ID)
         .when()
             .put("/users/{id}/unblock")
         .then()
@@ -260,7 +241,7 @@ public class UserControllerTest {
         given()
             .baseUri(uri)
             .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-            .pathParam("id", INVALID_USER_ID)
+            .pathParam("id", INVALID_ID)
         .when()
             .put("/users/{id}/block")
         .then()
