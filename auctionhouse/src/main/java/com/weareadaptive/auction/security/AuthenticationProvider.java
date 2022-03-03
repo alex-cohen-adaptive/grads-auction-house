@@ -1,6 +1,6 @@
 package com.weareadaptive.auction.security;
 
-import com.weareadaptive.auction.model.UserState;
+import com.weareadaptive.auction.model.state.UserState;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

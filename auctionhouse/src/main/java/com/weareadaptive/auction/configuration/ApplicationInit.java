@@ -1,7 +1,7 @@
 package com.weareadaptive.auction.configuration;
 
 import com.weareadaptive.auction.model.User;
-import com.weareadaptive.auction.model.UserState;
+import com.weareadaptive.auction.model.state.UserState;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

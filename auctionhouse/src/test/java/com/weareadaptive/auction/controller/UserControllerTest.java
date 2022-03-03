@@ -14,8 +14,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import com.weareadaptive.auction.TestData;
-import com.weareadaptive.auction.controller.dto.CreateUserRequest;
-import com.weareadaptive.auction.controller.dto.UpdateUserRequest;
+import com.weareadaptive.auction.dto.request.CreateUserRequest;
+import com.weareadaptive.auction.dto.request.UpdateUserRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

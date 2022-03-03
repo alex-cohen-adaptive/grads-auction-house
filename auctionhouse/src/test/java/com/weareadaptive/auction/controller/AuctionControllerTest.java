@@ -1,26 +1,15 @@
 package com.weareadaptive.auction.controller;
 
-import com.github.javafaker.Faker;
-import com.weareadaptive.auction.TestData;
-import com.weareadaptive.auction.controller.dto.CreateAuctionRequest;
-import com.weareadaptive.auction.controller.dto.CreateBidRequest;
-import com.weareadaptive.auction.controller.dto.CreateUserRequest;
-import com.weareadaptive.auction.controller.dto.UpdateUserRequest;
-import com.weareadaptive.auction.model.Bid;
-import com.weareadaptive.auction.model.User;
-import com.weareadaptive.auction.service.AuctionLotService;
-import com.weareadaptive.auction.service.UserService;
+import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
+import com.weareadaptive.auction.dto.request.CreateBidRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 import static com.weareadaptive.auction.TestData.ADMIN_AUTH_TOKEN;
-import static com.weareadaptive.auction.TestData.USER_AUTH_TOKEN;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -166,7 +155,7 @@ class AuctionControllerTest extends TestController {
                 .baseUri(uri)
                 .header(AUTHORIZATION, testData.user1Token())
                 .when()
-                .get("/auction/")
+                .get("/auction")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body(find1 + "id", equalTo(testData.auction1().getId()))
@@ -199,51 +188,134 @@ class AuctionControllerTest extends TestController {
     @DisplayName("should create a bid if valid")
     @Test
     void bid_shouldCreateBid() {
+        var bid = testData.bid1();
         var user = testData.user2();
+        var auctionId = testData.auction1();
         var createRequest = new CreateBidRequest(
                 user,
-
-
+                bid.getQuantity(),
+                bid.getPrice()
         );
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user2Token())
+                .contentType(ContentType.JSON)
+                .body(createRequest)
+                .when()
+                .post("/auctions/{auctionId}")
+                .then()
+                .statusCode(CREATED.value());
+        //.body("message", containsString("already exist"));
+        //@formatter:on
+    }
+
+  /*  @Test
+    void bid_shouldReturn_404_IfInvalidAuctionId() {
+    }
+*/
+    @Test
+    void bid_shouldReturn_403_IfOwner() {
+        var bid = testData.bid1();
+        var user = testData.user4();
+        var auctionId = testData.auction1().getId();
+        var createRequest = new CreateBidRequest(
+                user,
+                bid.getQuantity(),
+                bid.getPrice()
+        );
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user4Token())
+                .contentType(ContentType.JSON)
+                .body(createRequest)
+                .pathParam("auctionId",auctionId)
+                .when()
+                .post("/auctions/{auctionId}")
+                .then()
+                .statusCode(UNAUTHORIZED.value());
+        //.body("message", containsString("already exist"));
+        //@formatter:on
+    }
+
+    @Test
+    void getAllBids_shouldReturnIfExists() {
+        var bid = testData.bid1();
+        var user = testData.user4();
+        var auctionId = testData.auction1().getId();
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user4Token())
+                .contentType(ContentType.JSON)
+                .pathParam("auctionId",auctionId)
+                .when()
+                .get("/auctions/{auctionId}")
+                .then()
+                .statusCode(OK.value());
+        //.body("message", containsString("already exist"));
+        //@formatter:on
+    }
+
+    @Test
+    void getAllBids_shouldReturn_403_IfNotOwner() {
+        var bid = testData.bid1();
+        var user = testData.user1();
+        var auctionId = testData.auction1().getId();
 
         //@formatter:off
         given()
                 .baseUri(uri)
                 .header(AUTHORIZATION, testData.user1Token())
                 .contentType(ContentType.JSON)
-                .body(createRequest)
+                .pathParam("auctionId",auctionId)
                 .when()
-                .post("/auctions")
+                .get("/auctions/{auctionId}")
                 .then()
-                .statusCode(BAD_REQUEST.value());
+                .statusCode(FORBIDDEN.value());
         //.body("message", containsString("already exist"));
-        //@formatter:on
-    }
-
-    @Test
-    void bid_shouldReturn_404_IfInvalidAuctionId() {
-    }
-
-    @Test
-    void bid_shouldReturn_403_IfOwner() {
-    }
-
-    @Test
-    void getAllBids_shouldReturnIfExists() {
-    }
-
-
-    @Test
-    void getAllBids_shouldReturn_403_IfNotOwner() {
     }
 
     @Test
     void getAllBids_shouldReturn_404_IfNoBids() {
+        var bid = testData.bid1();
+        var user = testData.user1();
+        var auctionId = testData.auction1().getId();
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .contentType(ContentType.JSON)
+                .pathParam("auctionId",auctionId)
+                .when()
+                .get("/auctions/{auctionId}")
+                .then()
+                .statusCode(FORBIDDEN.value());
+        //.body("message", containsString("already exist"));
     }
 
 
     @Test
     void close_shouldClose() {
+        var bid = testData.bid1();
+        var user = testData.user1();
+        var auctionId = testData.auction1().getId();
+
+        //@formatter:off
+        given()
+                .baseUri(uri)
+                .header(AUTHORIZATION, testData.user1Token())
+                .contentType(ContentType.JSON)
+                .pathParam("auctionId",auctionId)
+                .when()
+                .get("/auctions/{auctionId}/close")
+                .then()
+                .statusCode(FORBIDDEN.value());
     }
 
 

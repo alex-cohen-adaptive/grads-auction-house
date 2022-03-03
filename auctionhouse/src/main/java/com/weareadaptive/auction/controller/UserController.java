@@ -1,8 +1,8 @@
 package com.weareadaptive.auction.controller;
 
-import com.weareadaptive.auction.controller.dto.CreateUserRequest;
-import com.weareadaptive.auction.controller.dto.UpdateUserRequest;
-import com.weareadaptive.auction.controller.dto.UserResponse;
+import com.weareadaptive.auction.dto.request.CreateUserRequest;
+import com.weareadaptive.auction.dto.request.UpdateUserRequest;
+import com.weareadaptive.auction.dto.response.UserResponse;
 import com.weareadaptive.auction.model.User;
 import com.weareadaptive.auction.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,17 +36,17 @@ public class UserController {
   public UserResponse create(@RequestBody @Valid CreateUserRequest user) {
     User newUser = userService.create(user.username(), user.password(),
       user.firstName(), user.lastName(), user.organisation());
-    return map(newUser);
+    return Mapper.map(newUser);
   }
 
   @GetMapping("{id}")
   public UserResponse getUser(@PathVariable @Valid int id) {
-    return map(userService.getUser(id));
+    return Mapper.map(userService.getUser(id));
   }
 
   @PutMapping("{id}")
   public UserResponse edit(@PathVariable @Valid int id, @RequestBody @Valid UpdateUserRequest updateUserRequest) {
-    return map(
+    return Mapper.map(
       userService.editUser(
         id,
         updateUserRequest.firstName(),

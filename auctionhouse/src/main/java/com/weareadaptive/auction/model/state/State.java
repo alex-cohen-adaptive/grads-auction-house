@@ -1,4 +1,7 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.state;
+
+import com.weareadaptive.auction.exception.BusinessException;
+import com.weareadaptive.auction.model.Entity;
 
 import java.util.HashMap;
 import java.util.Map;

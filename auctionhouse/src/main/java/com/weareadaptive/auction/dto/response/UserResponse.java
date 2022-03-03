@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.controller.dto;
+package com.weareadaptive.auction.dto.response;
 
 public record UserResponse(
         int id,

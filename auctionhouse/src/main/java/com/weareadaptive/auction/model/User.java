@@ -1,6 +1,8 @@
 package com.weareadaptive.auction.model;
 
 
+import com.weareadaptive.auction.exception.BusinessException;
+
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
 public class User implements Entity {

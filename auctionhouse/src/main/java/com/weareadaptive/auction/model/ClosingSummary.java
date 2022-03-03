@@ -1,5 +1,7 @@
 package com.weareadaptive.auction.model;
 
+import com.weareadaptive.auction.model.bid.WinningBid;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;

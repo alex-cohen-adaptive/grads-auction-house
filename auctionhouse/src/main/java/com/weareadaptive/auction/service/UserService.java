@@ -1,10 +1,9 @@
 package com.weareadaptive.auction.service;
 
 import com.weareadaptive.auction.model.User;
-import com.weareadaptive.auction.model.UserState;
+import com.weareadaptive.auction.model.state.UserState;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 

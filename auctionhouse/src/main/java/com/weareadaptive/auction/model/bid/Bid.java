@@ -1,4 +1,7 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.bid;
+
+import com.weareadaptive.auction.exception.BusinessException;
+import com.weareadaptive.auction.model.User;
 
 public class Bid {
   private final User user;

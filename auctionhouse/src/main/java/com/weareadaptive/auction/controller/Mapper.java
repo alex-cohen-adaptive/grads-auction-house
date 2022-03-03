@@ -1,8 +1,8 @@
 package com.weareadaptive.auction.controller;
 
-import com.weareadaptive.auction.controller.dto.AuctionResponse;
-import com.weareadaptive.auction.controller.dto.UserResponse;
-import com.weareadaptive.auction.model.AuctionLot;
+import com.weareadaptive.auction.dto.response.AuctionResponse;
+import com.weareadaptive.auction.dto.response.UserResponse;
+import com.weareadaptive.auction.model.Auction;
 import com.weareadaptive.auction.model.User;
 
 public class Mapper {
@@ -13,7 +13,7 @@ public class Mapper {
         return new UserResponse(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getOrganisation());
     }
 
-    public static AuctionResponse map(AuctionLot auction) {
+    public static AuctionResponse map(Auction auction) {
         return new AuctionResponse(auction.getId(),auction.getOwner(),auction.getSymbol(),
                 auction.getMinPrice(), auction.getQuantity());
     }

@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.controller.dto;
+package com.weareadaptive.auction.dto.request;
 
 import com.weareadaptive.auction.model.User;
 

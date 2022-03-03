@@ -4,7 +4,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
-import com.weareadaptive.auction.model.BusinessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,7 +42,7 @@ public class ExceptionHandlerControllerAdvice {
   }
 
 
-  @ExceptionHandler(NullPointerException.class)
+  @ExceptionHandler(UserException.class)
   public ResponseEntity<Object> userNotFoundHandler(NullPointerException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);

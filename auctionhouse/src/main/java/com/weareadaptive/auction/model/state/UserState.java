@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.state;
 
 import static java.lang.String.format;
 import static java.util.Comparator.comparing;
@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
+
+import com.weareadaptive.auction.exception.BusinessException;
+import com.weareadaptive.auction.model.OrganisationDetails;
+import com.weareadaptive.auction.model.User;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -2,7 +2,7 @@ package com.weareadaptive.auction.controller;
 
 import com.github.javafaker.Faker;
 import com.weareadaptive.auction.TestData;
-import com.weareadaptive.auction.service.AuctionLotService;
+import com.weareadaptive.auction.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 public abstract class TestController {
     public static final int INVALID_ID = 99999;
     @Autowired
-    AuctionLotService auctionLotService;
+    AuctionService auctionService;
     @Autowired
     TestData testData;
     @LocalServerPort
