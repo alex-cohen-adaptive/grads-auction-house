@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.stream.Stream;
 
-import static com.weareadaptive.auction.controller.UserMapper.map;
+import static com.weareadaptive.auction.controller.Mapper.map;
 
 @RestController
 @RequestMapping("/users")
@@ -58,7 +57,7 @@ public class UserController {
   @GetMapping
   public Stream<UserResponse> getUsers() {
     return userService.getAll()
-      .map(UserMapper::map);
+      .map(Mapper::map);
   }
 
   @PutMapping("{id}/block")
