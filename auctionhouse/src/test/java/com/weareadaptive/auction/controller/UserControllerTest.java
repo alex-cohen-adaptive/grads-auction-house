@@ -52,7 +52,7 @@ public class UserControllerTest {
         testData.user1().getUsername(),
         "dasfasdf",
         testData.user1().getFirstName(),
-        testData.user1().getFirstName(),
+        testData.user1().getLastName(),
         testData.user1().getOrganisation());
 
     //@formatter:off

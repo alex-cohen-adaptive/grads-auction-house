@@ -64,9 +64,5 @@ public class UserState extends State<User> {
         .toList();
   }
 
-//  todo do i need a copy constructor to keep reference?
-  public Map<String,User> getUsernameIndex() {
-    return usernameIndex;
-  }
 
 }
