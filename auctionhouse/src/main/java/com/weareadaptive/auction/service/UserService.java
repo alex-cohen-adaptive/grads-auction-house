@@ -1,11 +1,11 @@
 package com.weareadaptive.auction.service;
 
-import com.weareadaptive.auction.model.user.User;
 import com.weareadaptive.auction.model.state.UserState;
-import org.springframework.stereotype.Service;
-
+import com.weareadaptive.auction.model.user.User;
 import java.util.Objects;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {

@@ -1,5 +1,6 @@
 package com.weareadaptive.auction.controller;
 
+
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
 import com.weareadaptive.auction.dto.response.UserResponse;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import static com.weareadaptive.auction.controller.Mapper.map;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +32,12 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public UserResponse create(@RequestBody @Valid CreateUserRequest user) {
-    User newUser = userService.create(user.username(), user.password(), user.firstName(), user.lastName(), user.organisation());
+    User newUser = userService.create(
+      user.username(),
+      user.password(),
+      user.firstName(),
+      user.lastName(),
+      user.organisation());
     return Mapper.map(newUser);
   }
 
@@ -42,7 +47,9 @@ public class UserController {
   }
 
   @PutMapping("{id}")
-  public UserResponse edit(@PathVariable @Valid int id, @RequestBody @Valid UpdateUserRequest updateUserRequest) {
+  public UserResponse edit(
+    @PathVariable @Valid int id,
+    @RequestBody @Valid UpdateUserRequest updateUserRequest) {
     return Mapper.map(
       userService.editUser(
         id,

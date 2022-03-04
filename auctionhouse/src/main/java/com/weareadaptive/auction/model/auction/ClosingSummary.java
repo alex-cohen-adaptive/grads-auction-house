@@ -7,8 +7,9 @@ import java.time.Instant;
 import java.util.List;
 
 public record ClosingSummary(
-    List<WinningBid> winningBids,
-    int totalSoldQuantity,
-    BigDecimal totalRevenue,
-    Instant closingTime) {
+  List<WinningBid> winningBids,
+  int totalSoldQuantity,
+  BigDecimal totalRevenue,
+  Instant closingTime) {
+
 }

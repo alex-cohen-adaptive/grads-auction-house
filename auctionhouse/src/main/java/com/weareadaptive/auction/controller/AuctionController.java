@@ -4,6 +4,7 @@ import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
 import com.weareadaptive.auction.dto.request.CreateBidRequest;
 import com.weareadaptive.auction.dto.response.AuctionResponse;
 import com.weareadaptive.auction.dto.response.BidResponse;
+import com.weareadaptive.auction.model.auction.ClosingSummary;
 import com.weareadaptive.auction.service.AuctionService;
 
 import java.util.stream.Stream;
@@ -28,6 +29,7 @@ import static com.weareadaptive.auction.controller.Mapper.map;
 public class AuctionController {
   @Autowired
   private IAuthentication authentication;
+
   private final AuctionService auctionService;
 
   public AuctionController(AuctionService auctionService) {
@@ -40,7 +42,6 @@ public class AuctionController {
                                          CreateAuctionRequest createAuctionRequest) {
     return map(
       auctionService.create(
-        authentication.getAuthentication(),
         createAuctionRequest.symbol(),
         createAuctionRequest.quantity(),
         createAuctionRequest.minPrice()
@@ -58,9 +59,11 @@ public class AuctionController {
   @GetMapping("get-all")
   @ResponseStatus(HttpStatus.OK)
   public Stream<AuctionResponse> getAllAuctions() {
+//    todo check if empty if so then throw
     return auctionService.getAllAuctions()
       .map(Mapper::map);
   }
+
 
   //bid based on auction id
   @PostMapping("{id}/bid/create")
@@ -69,30 +72,31 @@ public class AuctionController {
                                 @RequestBody @Valid CreateBidRequest createBidRequest) {
     return map(
       auctionService.bid(
-      authentication.getAuthentication(),
-      id,
-      createBidRequest.price(),
-      createBidRequest.quantity()
+        id,
+        createBidRequest.price(),
+        createBidRequest.quantity()
       ));
   }
 
   @GetMapping("{id}/bid/get-all")
   @ResponseStatus(HttpStatus.OK)
-  public BidResponse getAllBids(@PathVariable @Valid int id) {
-    return null;
+  public Stream<BidResponse> getAllBids(@PathVariable @Valid int id) {
+    return auctionService.getAllBids(id)
+      .map(Mapper::map);
+
   }
 
-  @PostMapping("{id}/bid/close")
+  @PostMapping("{id}/close")
   @ResponseStatus(HttpStatus.OK)
-  public BidResponse closeAuction(@PathVariable @Valid int id) {
-    return null;
+  public ClosingSummary closeAuction(@PathVariable @Valid int id) {
+    return auctionService.closeAuction(id);
   }
 
 
   @GetMapping("{id}/summary")
   @ResponseStatus(HttpStatus.OK)
-  public BidResponse getAuctionSummary(@PathVariable @Valid int id) {
-    return null;
+  public ClosingSummary getAuctionSummary(@PathVariable @Valid int id) {
+    return auctionService.getAuctionSummary(id);
   }
 
 

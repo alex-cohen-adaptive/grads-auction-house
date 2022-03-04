@@ -1,10 +1,5 @@
 package com.weareadaptive.auction.model.auction;
 
-import com.weareadaptive.auction.exception.business.BusinessException;
-import com.weareadaptive.auction.model.user.User;
-import com.weareadaptive.auction.model.bid.Bid;
-import com.weareadaptive.auction.model.bid.WinningBid;
-
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.math.BigDecimal.valueOf;
@@ -14,11 +9,17 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
+import com.weareadaptive.auction.exception.auction.AuctionClose;
+import com.weareadaptive.auction.exception.business.BusinessException;
+import com.weareadaptive.auction.model.bid.Bid;
+import com.weareadaptive.auction.model.bid.WinningBid;
+import com.weareadaptive.auction.model.user.User;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
 
 public class Auction implements Entity {
   private final int id;
@@ -68,7 +69,7 @@ public class Auction implements Entity {
 
   public ClosingSummary getClosingSummary() {
     if (Status.CLOSED != status) {
-      throw new BusinessException("AuctionLot must be closed to have a closing summary");
+      throw new AuctionClose("AuctionLot must be closed to have a closing summary");
     }
     return closingSummary;
   }
@@ -99,16 +100,15 @@ public class Auction implements Entity {
     return bid;
   }
 
+
   public void close() {
     if (status == Status.CLOSED) {
-      throw new BusinessException("Cannot close because already closed.");
+      throw new AuctionClose("Cannot close because already closed.");
     }
 
     status = Status.CLOSED;
 
-    var orderedBids = bids
-      .stream()
-      .sorted(reverseOrder(comparing(Bid::getPrice))
+    var orderedBids = bids.stream().sorted(reverseOrder(comparing(Bid::getPrice))
         .thenComparing(reverseOrder(comparingInt(Bid::getQuantity))))
       .toList();
     var availableQuantity = this.quantity;
@@ -136,6 +136,7 @@ public class Auction implements Entity {
   public int getId() {
     return id;
   }
+
 
   public double getMinPrice() {
     return minPrice;

@@ -43,6 +43,7 @@ public class TestData {
     for (int i = 0; i < MAX_SIZE; i++) {
       auctions.add(createRandomAuction());
     }
+    auctions.get(3).close();
     for (int i = 0; i < MAX_SIZE; i++) {
       bids.add(createRandomBid());
     }
@@ -141,7 +142,7 @@ public class TestData {
 
   public Bid createRandomBid() {
     var index = (int) (Math.random() * MAX_SIZE - 1);
-    var priceIncrement =  faker.number().randomDouble(1, 1, 300);
+    var priceIncrement =  faker.number().randomDouble(1, 300, 600);
     return (
       new Bid(
         users.get(index),

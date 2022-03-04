@@ -51,7 +51,7 @@
       404: Cannot find the requested auction
 
 # only the owner can do this
-/auction/bid/getall/{auctionId):
+/auction/{id}/bid/get-all:
   get:
     body:
     header:
