@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
-import com.weareadaptive.auction.exception.BusinessException;
-import com.weareadaptive.auction.model.OrganisationDetails;
-import com.weareadaptive.auction.model.User;
+import com.weareadaptive.auction.exception.business.BusinessException;
+import com.weareadaptive.auction.model.organization.OrganisationDetails;
+import com.weareadaptive.auction.model.user.User;
 import org.springframework.stereotype.Component;
 
 @Component

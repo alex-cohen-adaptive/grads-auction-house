@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.exception;
+package com.weareadaptive.auction.exception.business;
 
 public class BusinessException extends RuntimeException {
   public BusinessException(String message) {

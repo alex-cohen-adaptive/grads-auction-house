@@ -1,6 +1,6 @@
 package com.weareadaptive.auction.dto.response;
 
-import com.weareadaptive.auction.model.User;
+import com.weareadaptive.auction.model.user.User;
 
 public record AuctionResponse (
         int id,

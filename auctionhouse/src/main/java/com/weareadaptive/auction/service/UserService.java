@@ -1,6 +1,6 @@
 package com.weareadaptive.auction.service;
 
-import com.weareadaptive.auction.model.User;
+import com.weareadaptive.auction.model.user.User;
 import com.weareadaptive.auction.model.state.UserState;
 import org.springframework.stereotype.Service;
 

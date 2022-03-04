@@ -1,27 +1,24 @@
 package com.weareadaptive.auction.dto.request;
 
-import com.weareadaptive.auction.model.User;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public record CreateAuctionRequest(
-        @NotBlank
-        @Positive
-        int id,
-
-        @NotBlank
-        User owner,
-
         @Pattern(regexp = "^[A-Za-z0-9.]+$")
         @Size(max = 4)
         String symbol,
 
-        @NotBlank
+        @NotNull
         @Positive
         @DecimalMin(value = "0.1")
-        double minPrice,
+        float minPrice,
 
-        @NotBlank
+        @NotNull
         @Positive
         @Min(1)
         int quantity

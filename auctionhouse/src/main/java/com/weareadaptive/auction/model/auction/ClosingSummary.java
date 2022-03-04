@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.auction;
 
 import com.weareadaptive.auction.model.bid.WinningBid;
 

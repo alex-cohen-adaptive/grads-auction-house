@@ -3,8 +3,10 @@ package com.weareadaptive.auction.controller;
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
 import com.weareadaptive.auction.dto.response.UserResponse;
-import com.weareadaptive.auction.model.User;
+import com.weareadaptive.auction.model.user.User;
 import com.weareadaptive.auction.service.UserService;
+import java.util.stream.Stream;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.util.stream.Stream;
-
 import static com.weareadaptive.auction.controller.Mapper.map;
 
 @RestController
@@ -34,8 +32,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public UserResponse create(@RequestBody @Valid CreateUserRequest user) {
-    User newUser = userService.create(user.username(), user.password(),
-      user.firstName(), user.lastName(), user.organisation());
+    User newUser = userService.create(user.username(), user.password(), user.firstName(), user.lastName(), user.organisation());
     return Mapper.map(newUser);
   }
 

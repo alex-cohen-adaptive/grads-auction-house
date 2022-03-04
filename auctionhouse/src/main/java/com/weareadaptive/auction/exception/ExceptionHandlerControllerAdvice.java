@@ -4,6 +4,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
+import com.weareadaptive.auction.exception.auction.AuctionCreated;
+import com.weareadaptive.auction.exception.auction.AuctionNotFound;
+import com.weareadaptive.auction.exception.business.BusinessException;
+import com.weareadaptive.auction.exception.user.UserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,8 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerControllerAdvice {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Object> handleMethodArgumentNotValidException(
-    MethodArgumentNotValidException ex) {
+  public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
 
@@ -27,9 +30,21 @@ public class ExceptionHandlerControllerAdvice {
       BAD_REQUEST);
   }
 
-  @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<Object> handleNotFoundException(
-    BusinessException ex) {
+  @ExceptionHandler(AuctionNotFound.class)
+  public ResponseEntity<Object> handleNotFoundException(AuctionNotFound ex) {
+    var headers = new HttpHeaders();
+    headers.setContentType(APPLICATION_PROBLEM_JSON);
+    return new ResponseEntity<>(
+      new Problem(
+        NOT_FOUND.value(),
+        NOT_FOUND.name(),
+        ex.getMessage()),
+      headers,
+      NOT_FOUND);
+  }
+
+  @ExceptionHandler(AuctionCreated.class)
+  public ResponseEntity<Object> handleAlreadyCreatedAuction(AuctionCreated ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
@@ -40,6 +55,7 @@ public class ExceptionHandlerControllerAdvice {
       headers,
       BAD_REQUEST);
   }
+
 
 
   @ExceptionHandler(UserException.class)

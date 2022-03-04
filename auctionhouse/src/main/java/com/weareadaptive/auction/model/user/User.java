@@ -1,7 +1,8 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.user;
 
 
-import com.weareadaptive.auction.exception.BusinessException;
+import com.weareadaptive.auction.exception.business.BusinessException;
+import com.weareadaptive.auction.model.auction.Entity;
 
 import static org.apache.logging.log4j.util.Strings.isBlank;
 

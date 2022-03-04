@@ -1,4 +1,6 @@
-package com.weareadaptive.auction.model;
+package com.weareadaptive.auction.model.organization;
+
+import com.weareadaptive.auction.model.user.User;
 
 import java.util.List;
 
