@@ -4,15 +4,14 @@ import static java.lang.String.format;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 
+import com.weareadaptive.auction.exception.business.BusinessException;
+import com.weareadaptive.auction.model.organization.OrganisationDetails;
+import com.weareadaptive.auction.model.user.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
-
-import com.weareadaptive.auction.exception.business.BusinessException;
-import com.weareadaptive.auction.model.organization.OrganisationDetails;
-import com.weareadaptive.auction.model.user.User;
 import org.springframework.stereotype.Component;
 
 @Component

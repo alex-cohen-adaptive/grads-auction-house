@@ -32,12 +32,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public UserResponse create(@RequestBody @Valid CreateUserRequest user) {
-    User newUser = userService.create(
-      user.username(),
-      user.password(),
-      user.firstName(),
-      user.lastName(),
-      user.organisation());
+    User newUser = userService.create(user.username(), user.password(), user.firstName(), user.lastName(), user.organisation());
     return Mapper.map(newUser);
   }
 
@@ -47,9 +42,7 @@ public class UserController {
   }
 
   @PutMapping("{id}")
-  public UserResponse edit(
-    @PathVariable @Valid int id,
-    @RequestBody @Valid UpdateUserRequest updateUserRequest) {
+  public UserResponse edit(@PathVariable @Valid int id, @RequestBody @Valid UpdateUserRequest updateUserRequest) {
     return Mapper.map(
       userService.editUser(
         id,

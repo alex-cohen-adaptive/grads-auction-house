@@ -6,12 +6,13 @@ import com.weareadaptive.auction.model.bid.Bid;
 import com.weareadaptive.auction.model.user.User;
 import com.weareadaptive.auction.service.AuctionService;
 import com.weareadaptive.auction.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class TestData {
@@ -19,6 +20,7 @@ public class TestData {
   public static final String ADMIN_AUTH_TOKEN = "Bearer ADMIN:adminpassword";
   public static final String USER_AUTH_TOKEN = "Bearer USER:userpassword";
   public static final int MAX_SIZE = 4;
+  private static int count = 1;
   private final UserService userService;
   private final AuctionService auctionService;
   private final Faker faker;
@@ -124,8 +126,7 @@ public class TestData {
         name.firstName(),
         name.lastName(),
         faker.company().name()
-      )
-    );
+      ));
   }
 
   public Auction createRandomAuction() {
@@ -135,20 +136,21 @@ public class TestData {
         user4(),
         stock.nsdqSymbol(),
         faker.number().randomDigitNotZero(),
-        faker.number().randomDouble(1, 1, 300))
-    );
+        faker.number().randomDouble(1, 1, 300)));
 
   }
 
+  public int getRandomIndex() {
+   return (int) (Math.random() * MAX_SIZE - 1);
+  }
+
   public Bid createRandomBid() {
-    var index = (int) (Math.random() * MAX_SIZE - 1);
+    var index = getRandomIndex();
+    var value = (count++) % 3;
     var priceIncrement =  faker.number().randomDouble(1, 300, 600);
-    return (
-      new Bid(
-        users.get(index),
-        faker.number().randomDigitNotZero(),
-        auctions.get(index).getMinPrice() + priceIncrement)
-    );
+    var bid = new Bid(users.get(value), faker.number().numberBetween(5,200), auctions.get(index).getMinPrice() + priceIncrement);
+    auctions.get(value).bid(bid.getUser(),bid.getQuantity(),bid.getPrice());
+    return bid;
   }
 
 

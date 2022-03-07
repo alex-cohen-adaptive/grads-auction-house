@@ -1,6 +1,8 @@
 package com.weareadaptive.auction.service;
 
 import com.weareadaptive.auction.controller.IAuthentication;
+import com.weareadaptive.auction.controller.Mapper;
+import com.weareadaptive.auction.dto.response.AuctionResponse;
 import com.weareadaptive.auction.exception.auction.AuctionNotFound;
 import com.weareadaptive.auction.exception.bid.BidException;
 import com.weareadaptive.auction.exception.user.UserException;
@@ -10,6 +12,7 @@ import com.weareadaptive.auction.model.bid.Bid;
 import com.weareadaptive.auction.model.state.AuctionState;
 import com.weareadaptive.auction.model.state.UserState;
 import com.weareadaptive.auction.model.user.User;
+import java.security.Principal;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +32,8 @@ public class AuctionService {
     this.userState = userState;
   }
 
-  private User getUser() {
-    var username = authentication.getAuthentication();
+  private User getUser(Principal principal) {
+    var username = principal.getName();
     var user = userState.getByUsername(username);
     if (user.isEmpty()) {
       throw new UserException("User Not Found!");
@@ -47,40 +50,42 @@ public class AuctionService {
     return auction;
   }
 
-  private boolean isOwner( int id) {
-    return (getUser() == getAuction(id).getOwner());
+  private boolean isOwner(int id, Principal principal) {
+    return (getUser(principal) == getAuction(id).getOwner());
   }
 
-  public Auction create(String symbol, int quantity, double minPrice) {
-    //todo check if null
-    var user = getUser();
+  public Auction create(Principal principal, String symbol, int quantity, double minPrice) {
+    var user = getUser(principal);
     var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
     auctionState.add(auctionLot);
     return auctionLot;
   }
 
+  //for testing
   public Auction create(User user, String symbol, int quantity, double minPrice) {
-    //todo check if null
     var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
     auctionState.add(auctionLot);
     return auctionLot;
   }
 
-
-  public Auction get(int id) {
-    return getAuction(id);
+  public AuctionResponse get(int id, Principal principal) {
+    var auction = getAuction(id);
+    if (isOwner(id, principal)) {
+      return Mapper.mapOwner(auction);
+    }
+    return Mapper.map(auction);
   }
 
-
-  public Stream<Auction> getAllAuctions() {
-    return auctionState.stream();
+  public Stream<AuctionResponse> getAllAuctions(Principal principal) {
+    Stream<AuctionResponse> auctionOwnerStream = auctionState.stream().filter(s -> isOwner(s.getId(),principal)).map(Mapper::mapOwner);
+    Stream<AuctionResponse> auctionResponseStream = auctionState.stream().filter(s -> !isOwner(s.getId(),principal)).map(Mapper::map);
+    return Stream.concat(auctionResponseStream, auctionOwnerStream);
   }
 
-
-  public Bid bid( int auctionId, double price, int quantity) {
-    var auction = get(auctionId);
-    var user = getUser();
-    if (user == auction.getOwner()) {
+  public Bid bid(Principal principal, int auctionId, double price, int quantity) {
+    var auction = getAuction(auctionId);
+    var user = getUser(principal);
+    if (isOwner(auctionId, principal)) {
       throw new BidException("Owner cannot bid on his/her own auction!");
     }
     return auction.bid(
@@ -90,17 +95,15 @@ public class AuctionService {
     );
   }
 
-
-  public Stream<Bid> getAllBids(int id) {
-    User user = getUser();
-    if (!isOwner(id)) {
+  public Stream<Bid> getAllBids(int id, Principal principal) {
+    if (!isOwner(id, principal)) {
       throw new BidException("Only owner is allowed to get all bids");
     }
     return auctionState.get(id).getBids().stream();
   }
 
-  public ClosingSummary closeAuction(int id) {
-    if (!isOwner(id)) {
+  public ClosingSummary closeAuction(int id, Principal principal) {
+    if (!isOwner(id, principal)) {
       throw new BidException("Only the owner can close his/her auction!");
     }
     var auction = getAuction(id);
@@ -108,9 +111,8 @@ public class AuctionService {
     return auction.getClosingSummary();
   }
 
-  public ClosingSummary getAuctionSummary(int id) {
-    var auction = getAuction(id);
-    return auction.getClosingSummary();
+  public ClosingSummary getAuctionSummary(Principal principal, int id) {
+    return getAuction(id).getClosingSummary();
   }
 
 }

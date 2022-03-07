@@ -1,21 +1,16 @@
 package com.weareadaptive.auction.model.state;
 
+import static java.lang.String.format;
+
+import com.weareadaptive.auction.exception.auction.AuctionCreated;
+import com.weareadaptive.auction.model.auction.Auction;
+import com.weareadaptive.auction.model.bid.LostBid;
+import com.weareadaptive.auction.model.bid.WonBid;
+import com.weareadaptive.auction.model.user.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import com.weareadaptive.auction.exception.auction.AuctionCreated;
-import com.weareadaptive.auction.exception.business.BusinessException;
-import com.weareadaptive.auction.model.auction.Auction;
-import com.weareadaptive.auction.model.user.User;
-import com.weareadaptive.auction.model.bid.LostBid;
-import com.weareadaptive.auction.model.bid.WonBid;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
-
-import static java.lang.String.format;
 
 @Component
 public class AuctionState extends State<Auction> {

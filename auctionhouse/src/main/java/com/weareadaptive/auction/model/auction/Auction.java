@@ -109,8 +109,7 @@ public class Auction implements Entity {
     status = Status.CLOSED;
 
     var orderedBids = bids.stream().sorted(reverseOrder(comparing(Bid::getPrice))
-        .thenComparing(reverseOrder(comparingInt(Bid::getQuantity))))
-      .toList();
+        .thenComparing(reverseOrder(comparingInt(Bid::getQuantity)))).toList();
     var availableQuantity = this.quantity;
     var revenue = BigDecimal.ZERO;
     var winningBids = new ArrayList<WinningBid>();
@@ -128,15 +127,16 @@ public class Auction implements Entity {
       }
     }
 
-    closingSummary =
-      new ClosingSummary(unmodifiableList(winningBids), this.quantity - availableQuantity,
-        revenue, timeProvider.get());
+    closingSummary = new ClosingSummary(unmodifiableList(winningBids), this.quantity - availableQuantity, revenue, timeProvider.get());
   }
 
   public int getId() {
     return id;
   }
 
+  public Instant getTimeProvider() {
+    return timeProvider.get();
+  }
 
   public double getMinPrice() {
     return minPrice;

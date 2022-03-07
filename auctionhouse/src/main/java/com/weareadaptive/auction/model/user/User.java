@@ -1,12 +1,13 @@
 package com.weareadaptive.auction.model.user;
 
+import static org.apache.logging.log4j.util.Strings.isBlank;
 
 import com.weareadaptive.auction.exception.business.BusinessException;
 import com.weareadaptive.auction.model.auction.Entity;
 
-import static org.apache.logging.log4j.util.Strings.isBlank;
 
 public class User implements Entity {
+  public static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
   private final int id;
   private final String username;
   private final String password;
@@ -51,7 +52,6 @@ public class User implements Entity {
     if (isBlank(organisation)) {
       throw new BusinessException("organisation cannot be null or empty");
     }
-    //TODO: Add regex for email
     this.id = id;
     this.username = username;
     this.password = password;
@@ -60,6 +60,7 @@ public class User implements Entity {
     this.organisation = organisation;
     this.isAdmin = isAdmin;
   }
+
 
   @Override
   public String toString() {
@@ -80,7 +81,6 @@ public class User implements Entity {
     return firstName;
   }
 
-  //TODO: Add validation
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }

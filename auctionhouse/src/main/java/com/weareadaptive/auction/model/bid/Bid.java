@@ -72,11 +72,9 @@ public class Bid {
 
   @Override
   public String toString() {
-    return "Bid{"
-      + "user=" + user
+    return "user=" + user.getUsername()
       + ", price=" + price
-      + ", quantity=" + quantity
-      + '}';
+      + ", quantity=" + quantity;
   }
 
   public enum State {
