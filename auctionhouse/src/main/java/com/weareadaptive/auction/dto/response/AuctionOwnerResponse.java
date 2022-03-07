@@ -10,7 +10,15 @@ public class AuctionOwnerResponse extends AuctionResponse {
   public Auction.Status status;
   public Instant timeProvider;
 
-  public AuctionOwnerResponse(int id, String owner, String symbol, double minPrice, int quantity, List<Bid> bids, Auction.Status status, Instant timeProvider) {
+  public AuctionOwnerResponse(
+      int id,
+      String owner,
+      String symbol,
+      double minPrice,
+      int quantity,
+      List<Bid> bids,
+      Auction.Status status,
+      Instant timeProvider) {
     super(id, owner, symbol, minPrice, quantity);
     this.bids = bids;
     this.status = status;

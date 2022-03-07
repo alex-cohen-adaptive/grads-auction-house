@@ -1,8 +1,6 @@
 package com.weareadaptive.auction.service;
 
-import com.weareadaptive.auction.controller.IAuthentication;
 import com.weareadaptive.auction.controller.Mapper;
-import com.weareadaptive.auction.dto.response.AuctionResponse;
 import com.weareadaptive.auction.exception.auction.AuctionNotFound;
 import com.weareadaptive.auction.exception.bid.BidException;
 import com.weareadaptive.auction.exception.user.UserException;
@@ -14,14 +12,11 @@ import com.weareadaptive.auction.model.state.UserState;
 import com.weareadaptive.auction.model.user.User;
 import java.security.Principal;
 import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class AuctionService {
-  @Autowired
-  private IAuthentication authentication;
 
   public static final String AUCTION_LOT_ENTITY = "AuctionLot";
   private final AuctionState auctionState;
@@ -44,6 +39,7 @@ public class AuctionService {
 
   private Auction getAuction(int id) {
     var auction = auctionState.get(id);
+
     if (auction == null) {
       throw new AuctionNotFound();
     }
@@ -68,18 +64,12 @@ public class AuctionService {
     return auctionLot;
   }
 
-  public AuctionResponse get(int id, Principal principal) {
-    var auction = getAuction(id);
-    if (isOwner(id, principal)) {
-      return Mapper.mapOwner(auction);
-    }
-    return Mapper.map(auction);
+  public Auction get(int id) {
+    return getAuction(id);
   }
 
-  public Stream<AuctionResponse> getAllAuctions(Principal principal) {
-    Stream<AuctionResponse> auctionOwnerStream = auctionState.stream().filter(s -> isOwner(s.getId(),principal)).map(Mapper::mapOwner);
-    Stream<AuctionResponse> auctionResponseStream = auctionState.stream().filter(s -> !isOwner(s.getId(),principal)).map(Mapper::map);
-    return Stream.concat(auctionResponseStream, auctionOwnerStream);
+  public Stream<Auction> getAllAuctions() {
+    return auctionState.stream();
   }
 
   public Bid bid(Principal principal, int auctionId, double price, int quantity) {

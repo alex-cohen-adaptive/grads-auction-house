@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/auction")
+@RequestMapping("/auctions")
 @PreAuthorize("hasRole('ROLE_USER')")
 public class AuctionController {
   private final AuctionService auctionService;
@@ -32,53 +32,53 @@ public class AuctionController {
     this.auctionService = auctionService;
   }
 
-  @PostMapping("create")
+  @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public AuctionResponse createAuction(@RequestBody @Valid
-                                         CreateAuctionRequest createAuctionRequest,
-                                       Principal principal) {
+  public AuctionResponse createAuction(
+      @RequestBody @Valid CreateAuctionRequest createAuctionRequest,
+      Principal principal) {
+
     return map(
-      auctionService.create(
-        principal,
-        createAuctionRequest.symbol(),
-        createAuctionRequest.quantity(),
-        createAuctionRequest.minPrice()
-      ));
+        auctionService.create(
+            principal,
+            createAuctionRequest.symbol(),
+            createAuctionRequest.quantity(),
+            createAuctionRequest.minPrice()
+        ));
   }
 
-  @GetMapping("get/{id}")
+  @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public AuctionResponse getAuction(@PathVariable @Valid int id, Principal principal) {
-    return auctionService.get(id, principal);
+    return map(auctionService.get(id));
   }
 
-  @GetMapping("get-all")
+  @GetMapping()
   @ResponseStatus(HttpStatus.OK)
   public Stream<AuctionResponse> getAllAuctions(Principal principal) {
-    return auctionService.getAllAuctions(principal);
+    return auctionService.getAllAuctions().map(Mapper::map);
   }
 
 
-  //bid based on auction id
-  @PostMapping("{id}/bid/create")
+  @PostMapping("{id}/bid")
   @ResponseStatus(HttpStatus.CREATED)
   public BidResponse bidAuction(@PathVariable @Valid int id,
                                 @RequestBody @Valid CreateBidRequest createBidRequest,
                                 Principal principal) {
     return map(
-      auctionService.bid(
-        principal,
-        id,
-        createBidRequest.price(),
-        createBidRequest.quantity()
-      ));
+        auctionService.bid(
+            principal,
+            id,
+            createBidRequest.price(),
+            createBidRequest.quantity()
+        ));
   }
 
-  @GetMapping("{id}/bid/get-all")
+  @GetMapping("{id}/bids")
   @ResponseStatus(HttpStatus.OK)
   public Stream<BidResponse> getAllBids(@PathVariable @Valid int id, Principal principal) {
     return auctionService.getAllBids(id, principal)
-      .map(Mapper::map);
+        .map(Mapper::map);
 
   }
 

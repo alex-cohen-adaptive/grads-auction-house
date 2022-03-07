@@ -2,7 +2,6 @@ package com.weareadaptive.auction.model.state;
 
 import com.weareadaptive.auction.exception.business.BusinessException;
 import com.weareadaptive.auction.model.auction.Entity;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;

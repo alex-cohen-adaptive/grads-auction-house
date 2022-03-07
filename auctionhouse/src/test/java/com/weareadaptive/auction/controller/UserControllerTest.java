@@ -36,22 +36,22 @@ public class UserControllerTest extends TestController {
   @Test
   public void create_shouldReturnBadRequestIfUserExist() {
     var createRequest = new CreateUserRequest(
-      testData.user1().getUsername(), "dasfasdf",
-      testData.user1().getFirstName(),
-      testData.user1().getLastName(),
-      testData.user1().getOrganisation());
+        testData.user1().getUsername(), "dasfasdf",
+        testData.user1().getFirstName(),
+        testData.user1().getLastName(),
+        testData.user1().getOrganisation());
 
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/users")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value())
-      .body("message", containsString("already exist"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post("/users")
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value())
+        .body("message", containsString("already exist"));
   }
 
   @DisplayName("getAll should return all users")
@@ -61,23 +61,24 @@ public class UserControllerTest extends TestController {
     var find2 = format("find { it.id == %s }.", testData.user2().getId());
 
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .when()
-      .get("/users")
-      .then()
-      .statusCode(HttpStatus.OK.value())
-      // Validate User1
-      .body(find1 + "username", equalTo(testData.user1().getUsername()))
-      .body(find1 + "firstName", equalTo(testData.user1().getFirstName()))
-      .body(find1 + "lastName", equalTo(testData.user1().getLastName()))
-      .body(find1 + "organisation", equalTo(testData.user1().getOrganisation()))
-      .body(find1 + "email", equalTo(testData.user1().getEmail()))
-      // Validate User2
-      .body(find2 + "username", equalTo(testData.user2().getUsername()))
-      .body(find2 + "firstName", equalTo(testData.user2().getFirstName()))
-      .body(find2 + "lastName", equalTo(testData.user2().getLastName()))
-      .body(find2 + "organisation", equalTo(testData.user2().getOrganisation())).body(find2 + "email", equalTo(testData.user2().getEmail()));
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .when()
+        .get("/users")
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        // Validate User1
+        .body(find1 + "username", equalTo(testData.user1().getUsername()))
+        .body(find1 + "firstName", equalTo(testData.user1().getFirstName()))
+        .body(find1 + "lastName", equalTo(testData.user1().getLastName()))
+        .body(find1 + "organisation", equalTo(testData.user1().getOrganisation()))
+        .body(find1 + "email", equalTo(testData.user1().getEmail()))
+        // Validate User2
+        .body(find2 + "username", equalTo(testData.user2().getUsername()))
+        .body(find2 + "firstName", equalTo(testData.user2().getFirstName()))
+        .body(find2 + "lastName", equalTo(testData.user2().getLastName()))
+        .body(find2 + "organisation", equalTo(testData.user2().getOrganisation()))
+        .body(find2 + "email", equalTo(testData.user2().getEmail()));
   }
 
   @DisplayName("get should when return 404 when user doesn't")
@@ -116,7 +117,7 @@ public class UserControllerTest extends TestController {
       .baseUri(uri)
       .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
       .pathParam("id", testData.user1().getId())
-      .when()
+        .when()
       .get("/users/{id}")
       .then()
       .statusCode(HttpStatus.OK.value())
@@ -131,7 +132,10 @@ public class UserControllerTest extends TestController {
   @Test
   public void update_shouldReturnNotFoundWhenUpdatingNonExistingUser() {
     var name = faker.name();
-    var updateRequest = new UpdateUserRequest(name.firstName(), name.lastName(), faker.company().name());
+    var updateRequest = new UpdateUserRequest(
+        name.firstName(),
+        name.lastName(),
+        faker.company().name());
 
     //@formatter:off
     given()
@@ -151,7 +155,10 @@ public class UserControllerTest extends TestController {
   public void shouldUpdateUserIfExists() {
     var newUser = testData.createRandomUser();
     var name = faker.name();
-    var updateRequest = new UpdateUserRequest(name.firstName(), name.lastName(), faker.company().name());
+    var updateRequest = new UpdateUserRequest(
+        name.firstName(),
+        name.lastName(),
+        faker.company().name());
 
     //@formatter:off
     given()
@@ -243,12 +250,12 @@ public class UserControllerTest extends TestController {
   public void shouldReturnUserIfCreated() {
     var name = faker.name();
     var createRequest =
-      new CreateUserRequest(
-        name.username(),
-        TestData.PASSWORD,
-        name.firstName(),
-        name.lastName(),
-        faker.company().name());
+        new CreateUserRequest(
+            name.username(),
+            TestData.PASSWORD,
+            name.firstName(),
+            name.lastName(),
+            faker.company().name());
 
     //@formatter:off
     given()

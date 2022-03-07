@@ -28,7 +28,7 @@ import org.springframework.http.HttpStatus;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AuctionControllerTest extends TestController {
 
-  public static final String END_POINT = "/auction";
+  public static final String END_POINT = "/auctions";
 
   @BeforeEach
   public void initialiseRestAssuredMockMvcStandalone() {
@@ -36,36 +36,25 @@ class AuctionControllerTest extends TestController {
   }
 
 
-  //Bid
-  //valid
-  //create a bid with negative quantity
-  //create bid with negative amount
-  //create a bid owner cannot place bid
-  //close auction
-  //close auction valid
-  //close the auction not owner
-  //close the auction already closed
-  //close auction summary
-  //close auction summary valid
-  //close auction is open
-
-
   @DisplayName("create should return a bad request when the auction already exists")
   @Test
   public void create_shouldReturn_400_IfAuctionExist() {
-    var createRequest = new CreateAuctionRequest(testData.auction1().getSymbol(), (float) testData.auction1().getMinPrice(), testData.auction1().getQuantity());
+    var createRequest = new CreateAuctionRequest(
+        testData.auction1().getSymbol(),
+        (float) testData.auction1().getMinPrice(),
+        testData.auction1().getQuantity());
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/create")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value()).body("message", containsString("already exist"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post()
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value()).body("message", containsString("already exist"));
     //@formatter:on
   }
 
@@ -75,23 +64,26 @@ class AuctionControllerTest extends TestController {
   public void create_shouldReturnAuctionIfCreated() {
     var name = faker.stock().nyseSymbol();
 
-    var createRequest = new CreateAuctionRequest(name, (float) testData.auction1().getMinPrice(), testData.auction1().getQuantity());
+    var createRequest = new CreateAuctionRequest(
+        name,
+        (float) testData.auction1().getMinPrice(),
+        testData.auction1().getQuantity());
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/create")
-      .then()
-      .log().all()
-      .statusCode(CREATED.value())
-      .body("id", greaterThan(0))
-      .body("symbol", equalTo(createRequest.symbol()))
-      .body("minPrice", equalTo(createRequest.minPrice()))
-      .body("quantity", equalTo(createRequest.quantity())
-      );
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post()
+        .then()
+        .log().all()
+        .statusCode(CREATED.value())
+        .body("id", greaterThan(0))
+        .body("symbol", equalTo(createRequest.symbol()))
+        .body("minPrice", equalTo(createRequest.minPrice()))
+        .body("quantity", equalTo(createRequest.quantity())
+        );
     //@formatter:on
   }
 
@@ -102,19 +94,22 @@ class AuctionControllerTest extends TestController {
   public void create_shouldReturn_400_IfInvalidSymbol(String argument) {
     var name = faker.stock().nyseSymbol();
 
-    var createRequest = new CreateAuctionRequest(argument, (float) testData.auction1().getMinPrice(), testData.auction1().getQuantity());
+    var createRequest = new CreateAuctionRequest(
+        argument,
+        (float) testData.auction1().getMinPrice(),
+        testData.auction1().getQuantity());
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/create")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post()
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value());
 
   }
 
@@ -130,36 +125,40 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/create")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post()
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value());
     //@formatter:on
 
   }
 
-  @DisplayName("Should return bad request if the user provides a negative/0 quantity for the auction")
+  @DisplayName
+      ("Should return bad request if the user provides a negative/0 quantity for the auction")
   @ParameterizedTest()
   @ValueSource(ints = {0, -1})
   public void create_shouldReturn_400_IfNegativeQuantity(int argument) {
     var name = faker.stock().nyseSymbol();
-    var createRequest = new CreateAuctionRequest(name, (float) testData.auction1().getMinPrice(), argument);
+    var createRequest = new CreateAuctionRequest(
+        name,
+        (float) testData.auction1().getMinPrice(),
+        argument);
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/create")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post()
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value());
     //@formatter:on
   }
 
@@ -168,15 +167,15 @@ class AuctionControllerTest extends TestController {
   public void get_shouldReturn_404_WhenAuctionNotFound() {
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .pathParam("id", INVALID_ID)
-      .when()
-      .get("/get/{id}")
-      .then()
-      .log().all()
-      .statusCode(NOT_FOUND.value())
-      .body("message", containsString("Not Found!"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .pathParam("id", INVALID_ID)
+        .when()
+        .get("{id}")
+        .then()
+        .log().all()
+        .statusCode(NOT_FOUND.value())
+        .body("message", containsString("Not Found!"));
     //@formatter:on
   }
 
@@ -186,14 +185,14 @@ class AuctionControllerTest extends TestController {
   public void get_shouldReturn_400_IfInvalidId() {
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .pathParam("id", "dsads")
-      .when()
-      .get("/get/{id}")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .pathParam("id", "dsads")
+        .when()
+        .get("{id}")
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value());
     //@formatter:on
   }
 
@@ -202,19 +201,19 @@ class AuctionControllerTest extends TestController {
   public void get_shouldReturnAuctionIfExists() {
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .pathParam("id", testData.auction1().getId())
-      .when()
-      .get("/get/{id}")
-      .then()
-      .log().all()
-      .statusCode(HttpStatus.OK.value())
-      .body("id", equalTo(testData.auction1().getId()))
-      .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
-      .body("symbol", equalTo(testData.auction1().getSymbol()))
-      .body("quantity", equalTo(testData.auction1().getQuantity()))
-      .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .pathParam("id", testData.auction1().getId())
+        .when()
+        .get("{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.OK.value())
+        .body("id", equalTo(testData.auction1().getId()))
+        .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
+        .body("symbol", equalTo(testData.auction1().getSymbol()))
+        .body("quantity", equalTo(testData.auction1().getQuantity()))
+        .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
     //@formatter:on
   }
 
@@ -223,19 +222,19 @@ class AuctionControllerTest extends TestController {
   public void get_shouldReturnAuctionIfExistsAndOwner() {
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .pathParam("id", testData.auction1().getId())
-      .when()
-      .get("/get/{id}")
-      .then()
-      .log().all()
-      .statusCode(HttpStatus.OK.value())
-      .body("id", equalTo(testData.auction1().getId()))
-      .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
-      .body("symbol", equalTo(testData.auction1().getSymbol()))
-      .body("quantity", equalTo(testData.auction1().getQuantity()))
-      .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .pathParam("id", testData.auction1().getId())
+        .when()
+        .get("{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.OK.value())
+        .body("id", equalTo(testData.auction1().getId()))
+        .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
+        .body("symbol", equalTo(testData.auction1().getSymbol()))
+        .body("quantity", equalTo(testData.auction1().getQuantity()))
+        .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
     //@formatter:on
   }
 
@@ -249,45 +248,44 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .when()
-      .get("/get-all")
-      .then()
-      .log().all()
-      .statusCode(HttpStatus.OK.value())
-      .body(find1 + "id", equalTo(testData.auction1().getId()))
-      .body(find1 + "symbol", equalTo(testData.auction1().getSymbol()))
-      .body(find1 + "quantity", equalTo(testData.auction1().getQuantity()))
-      .body(find1 + "minPrice", equalTo( (float) testData.auction1().getMinPrice()))
-      .body(find2 + "id", equalTo(testData.auction2().getId()))
-      .body(find2 + "symbol", equalTo(testData.auction2().getSymbol()))
-      .body(find2 + "quantity", equalTo(testData.auction2().getQuantity()))
-      .body(find2 + "minPrice", equalTo( (float) testData.auction2().getMinPrice()))
-      .body(find3 + "id", equalTo(testData.auction3().getId()))
-      .body(find3 + "symbol", equalTo(testData.auction3().getSymbol()))
-      .body(find3 + "quantity", equalTo(testData.auction3().getQuantity()))
-      .body(find3 + "minPrice", equalTo( (float) testData.auction3().getMinPrice()))
-      .body(find4 + "id", equalTo(testData.auction4().getId()))
-      .body(find4 + "symbol", equalTo(testData.auction4().getSymbol()))
-      .body(find4 + "quantity", equalTo(testData.auction4().getQuantity()))
-      .body(find4 + "minPrice", equalTo( (float) testData.auction4().getMinPrice()));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .when()
+        .get()
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.OK.value())
+        .body(find1 + "id", equalTo(testData.auction1().getId()))
+        .body(find1 + "symbol", equalTo(testData.auction1().getSymbol()))
+        .body(find1 + "quantity", equalTo(testData.auction1().getQuantity()))
+        .body(find1 + "minPrice", equalTo((float) testData.auction1().getMinPrice()))
+        .body(find2 + "id", equalTo(testData.auction2().getId()))
+        .body(find2 + "symbol", equalTo(testData.auction2().getSymbol()))
+        .body(find2 + "quantity", equalTo(testData.auction2().getQuantity()))
+        .body(find2 + "minPrice", equalTo((float) testData.auction2().getMinPrice()))
+        .body(find3 + "id", equalTo(testData.auction3().getId()))
+        .body(find3 + "symbol", equalTo(testData.auction3().getSymbol()))
+        .body(find3 + "quantity", equalTo(testData.auction3().getQuantity()))
+        .body(find3 + "minPrice", equalTo((float) testData.auction3().getMinPrice()))
+        .body(find4 + "id", equalTo(testData.auction4().getId()))
+        .body(find4 + "symbol", equalTo(testData.auction4().getSymbol()))
+        .body(find4 + "quantity", equalTo(testData.auction4().getQuantity()))
+        .body(find4 + "minPrice", equalTo((float) testData.auction4().getMinPrice()));
     //@formatter:on
   }
 
   @DisplayName("should be reg user to access api")
   @Test
-  public void action_shouldReturn_403_WhenNotAUser() {
+  public void action_shouldReturn_403_WhenNotaUser() {
     //@formatter:off
     given()
       .baseUri(uri)
       .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
       .pathParam("id", INVALID_ID)
-      .when()
-      .get("/get/{id}")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value());
+    .when()
+      .get("{id}")
+    .then()
+        .statusCode(FORBIDDEN.value());
     //@formatter:on
   }
 
@@ -301,18 +299,18 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user2Token())
-      .pathParam("id", auctionId)
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/{id}/bid/create")
-      .then()
-      .log().all()
-      .statusCode(CREATED.value())
-      .body("quantity", equalTo(bid.getQuantity()))
-      .body("price", equalTo((float) bid.getPrice()));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user2Token())
+        .pathParam("id", auctionId)
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post("/{id}/bid")
+        .then()
+        .log().all()
+        .statusCode(CREATED.value())
+        .body("quantity", equalTo(bid.getQuantity()))
+        .body("price", equalTo((float) bid.getPrice()));
     //@formatter:on
   }
 
@@ -324,22 +322,22 @@ class AuctionControllerTest extends TestController {
     var user = testData.user2();
     var auctionId = testData.auction2().getId();
     var createRequest = new CreateBidRequest(
-      bid.getQuantity(),
-      1);
+        bid.getQuantity(),
+        1);
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user2Token())
-      .pathParam("id", auctionId)
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .when()
-      .post("/{id}/bid/create")
-      .then()
-      .log().all()
-      .statusCode(BAD_REQUEST.value())
-      .body("message", containsString("price needs to be above"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user2Token())
+        .pathParam("id", auctionId)
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .when()
+        .post("/{id}/bid")
+        .then()
+        .log().all()
+        .statusCode(BAD_REQUEST.value())
+        .body("message", containsString("price needs to be above"));
     //@formatter:on
   }
 
@@ -350,23 +348,23 @@ class AuctionControllerTest extends TestController {
     var user = testData.user4();
     var auctionId = testData.auction1().getId();
     var createRequest = new CreateBidRequest(
-      bid.getQuantity(),
-      bid.getPrice()
+        bid.getQuantity(),
+        bid.getPrice()
     );
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .body(createRequest)
-      .pathParam("id", auctionId)
-      .when()
-      .post("/{id}/bid/create")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value())
-      .body("message", containsString("cannot bid"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .body(createRequest)
+        .pathParam("id", auctionId)
+        .when()
+        .post("/{id}/bid")
+        .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value())
+        .body("message", containsString("cannot bid"));
     //@formatter:on
   }
 
@@ -378,15 +376,15 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .get("{id}/bid/get-all")
-      .then()
-      .log().all()
-      .statusCode(OK.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .get("{id}/bids")
+        .then()
+        .log().all()
+        .statusCode(OK.value());
     //@formatter:on
   }
 
@@ -398,16 +396,16 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .get("{id}/bid/get-all")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value())
-      .body("message", containsString("get all bids"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .get("{id}/bids")
+        .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value())
+        .body("message", containsString("get all bids"));
   }
 
   @Test
@@ -418,15 +416,15 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .post("/{id}/close")
-      .then()
-      .log().all()
-      .statusCode(OK.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .post("/{id}/close")
+        .then()
+        .log().all()
+        .statusCode(OK.value());
   }
 
 
@@ -436,15 +434,15 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user1Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .post("/{id}/close")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value()).body("message", containsString("owner can close"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user1Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .post("/{id}/close")
+        .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value()).body("message", containsString("owner can close"));
     //@formatter:on
 
   }
@@ -455,16 +453,16 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .post("/{id}/close")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value())
-      .body("message", containsString("already closed"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .post("/{id}/close")
+        .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value())
+        .body("message", containsString("already closed"));
   }
 
 
@@ -474,15 +472,15 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .get("/{id}/summary")
-      .then()
-      .log().all()
-      .statusCode(OK.value());
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .get("/{id}/summary")
+        .then()
+        .log().all()
+        .statusCode(OK.value());
   }
 
   @Test
@@ -491,15 +489,15 @@ class AuctionControllerTest extends TestController {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, testData.user4Token())
-      .contentType(ContentType.JSON)
-      .pathParam("id", auctionId)
-      .when()
-      .get("/{id}/summary")
-      .then()
-      .log().all()
-      .statusCode(FORBIDDEN.value())
-      .body("message", containsString("must be closed"));
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .get("/{id}/summary")
+        .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value())
+        .body("message", containsString("must be closed"));
   }
 }

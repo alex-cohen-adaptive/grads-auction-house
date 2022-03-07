@@ -127,7 +127,11 @@ public class Auction implements Entity {
       }
     }
 
-    closingSummary = new ClosingSummary(unmodifiableList(winningBids), this.quantity - availableQuantity, revenue, timeProvider.get());
+    closingSummary = new ClosingSummary(
+        unmodifiableList(winningBids),
+        this.quantity - availableQuantity,
+        revenue,
+        timeProvider.get());
   }
 
   public int getId() {
@@ -152,26 +156,26 @@ public class Auction implements Entity {
 
   public List<Bid> getLostBids(User user) {
     return bids
-      .stream()
-      .filter(bid -> bid.getUser() == user
-        && closingSummary.winningBids().stream().noneMatch(wb -> wb.originalBid() == bid))
-      .toList();
+        .stream()
+        .filter(bid -> bid.getUser() == user
+            && closingSummary.winningBids().stream().noneMatch(wb -> wb.originalBid() == bid))
+        .toList();
   }
 
   public List<WinningBid> getWonBids(User user) {
     return closingSummary.winningBids()
-      .stream()
-      .filter(b -> b.originalBid().getUser() == user)
-      .toList();
+        .stream()
+        .filter(b -> b.originalBid().getUser() == user)
+        .toList();
   }
 
   @Override
   public String toString() {
     return "AuctionLot{"
-      + "owner=" + owner
-      + ", title='" + symbol + '\''
-      + ", status=" + status
-      + '}';
+        + "owner=" + owner
+        + ", title='" + symbol + '\''
+        + ", status=" + status
+        + '}';
   }
 
   public enum Status {

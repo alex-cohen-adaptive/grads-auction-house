@@ -7,7 +7,6 @@ import com.weareadaptive.auction.model.auction.Entity;
 
 
 public class User implements Entity {
-  public static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$";
   private final int id;
   private final String username;
   private final String password;

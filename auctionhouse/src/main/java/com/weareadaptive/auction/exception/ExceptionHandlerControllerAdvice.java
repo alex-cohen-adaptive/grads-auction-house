@@ -20,29 +20,32 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerControllerAdvice {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+  public ResponseEntity<Object>
+          handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
 
     var invalidFields = ex.getBindingResult().getFieldErrors().stream()
-      .map(error -> new InvalidField(error.getField(), error.getDefaultMessage()))
-      .toList();
+        .map(error -> new InvalidField(error.getField(), error.getDefaultMessage()))
+        .toList();
 
     return new ResponseEntity<>(new BadRequestInvalidFieldsProblem(invalidFields), headers,
-      BAD_REQUEST);
+        BAD_REQUEST);
   }
 
   @ExceptionHandler(AuctionNotFound.class)
   public ResponseEntity<Object> handleNotFoundException(AuctionNotFound ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
+    //ResponseEntity.notFound().build();
     return new ResponseEntity<>(
-      new Problem(
-        NOT_FOUND.value(),
-        NOT_FOUND.name(),
-        ex.getMessage()),
-      headers,
-      NOT_FOUND);
+        new Problem(
+            NOT_FOUND.value(),
+            NOT_FOUND.name(),
+            ex.getMessage()),
+        headers,
+        NOT_FOUND);
   }
 
   @ExceptionHandler(AuctionClose.class)
@@ -50,12 +53,12 @@ public class ExceptionHandlerControllerAdvice {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
-      new Problem(
-        FORBIDDEN.value(),
-        FORBIDDEN.name(),
-        ex.getMessage()),
-      headers,
-      FORBIDDEN);
+        new Problem(
+            FORBIDDEN.value(),
+            FORBIDDEN.name(),
+            ex.getMessage()),
+        headers,
+        FORBIDDEN);
   }
 
   @ExceptionHandler(BusinessException.class)
@@ -63,12 +66,12 @@ public class ExceptionHandlerControllerAdvice {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
-      new Problem(
-        BAD_REQUEST.value(),
-        BAD_REQUEST.name(),
-        ex.getMessage()),
-      headers,
-      BAD_REQUEST);
+        new Problem(
+            BAD_REQUEST.value(),
+            BAD_REQUEST.name(),
+            ex.getMessage()),
+        headers,
+        BAD_REQUEST);
   }
 
   @ExceptionHandler(AuctionCreated.class)
@@ -76,23 +79,26 @@ public class ExceptionHandlerControllerAdvice {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
-      new Problem(
-        BAD_REQUEST.value(),
-        BAD_REQUEST.name(),
-        ex.getMessage()),
-      headers,
-      BAD_REQUEST);
+        new Problem(
+            BAD_REQUEST.value(),
+            BAD_REQUEST.name(),
+            ex.getMessage()),
+        headers,
+        BAD_REQUEST);
   }
 
-
   @ExceptionHandler(BidException.class)
-  public ResponseEntity<Object> userNotFoundHandler(BidException ex) {
+  public ResponseEntity<Object> handleAlreadyCreatedAuction(BidException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
-      new Problem(
-        FORBIDDEN.value(),
-        FORBIDDEN.name(),
-        ex.getMessage()), headers, FORBIDDEN);
+        new Problem(
+            FORBIDDEN.value(),
+            FORBIDDEN.name(),
+            ex.getMessage()),
+        headers,
+        FORBIDDEN);
   }
+
+
 }
