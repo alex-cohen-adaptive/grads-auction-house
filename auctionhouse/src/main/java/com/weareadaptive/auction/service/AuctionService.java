@@ -1,6 +1,5 @@
 package com.weareadaptive.auction.service;
 
-import com.weareadaptive.auction.controller.Mapper;
 import com.weareadaptive.auction.exception.auction.AuctionNotFound;
 import com.weareadaptive.auction.exception.bid.BidException;
 import com.weareadaptive.auction.exception.user.UserException;

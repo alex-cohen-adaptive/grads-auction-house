@@ -1,6 +1,6 @@
 package com.weareadaptive.auction.controller;
 
 
-public interface IAuthentication {
+public interface Iauthentication {
   String getAuthentication();
 }

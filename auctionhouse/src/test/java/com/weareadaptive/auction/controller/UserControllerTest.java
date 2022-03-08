@@ -121,10 +121,10 @@ public class UserControllerTest extends TestController {
       .get("/users/{id}")
       .then()
       .statusCode(HttpStatus.OK.value())
-      .body("id", equalTo(testData.user1().getId()))
-      .body("firstName", equalTo(testData.user1().getFirstName()))
-      .body("lastName", equalTo(testData.user1().getLastName()))
-      .body("organisation", equalTo(testData.user1().getOrganisation()));
+          .body("id", equalTo(testData.user1().getId()))
+          .body("firstName", equalTo(testData.user1().getFirstName()))
+          .body("lastName", equalTo(testData.user1().getLastName()))
+          .body("organisation", equalTo(testData.user1().getOrganisation()));
     //@formatter:on
   }
 
@@ -146,7 +146,7 @@ public class UserControllerTest extends TestController {
       .body(updateRequest)
       .when()
       .put("/users/{id}")
-      .then();
+          .then();
     //@formatter:on
   }
 
@@ -171,10 +171,10 @@ public class UserControllerTest extends TestController {
       .put("/users/{id}")
       .then()
       .statusCode(HttpStatus.OK.value())
-      .body("id", equalTo(newUser.getId()))
-      .body("firstName", equalTo(updateRequest.firstName()))
-      .body("lastName", equalTo(updateRequest.lastName()))
-      .body("organisation", equalTo(updateRequest.organisation()));
+          .body("id", equalTo(newUser.getId()))
+          .body("firstName", equalTo(updateRequest.firstName()))
+          .body("lastName", equalTo(updateRequest.lastName()))
+          .body("organisation", equalTo(updateRequest.organisation()));
     //@formatter:on
   }
 
@@ -226,7 +226,7 @@ public class UserControllerTest extends TestController {
       .when()
       .put("/users/{id}/unblock")
       .then()
-      .statusCode(NOT_FOUND.value());
+          .statusCode(NOT_FOUND.value());
     //@formatter:on
   }
 
@@ -241,7 +241,7 @@ public class UserControllerTest extends TestController {
       .when()
       .put("/users/{id}/block")
       .then()
-      .statusCode(NOT_FOUND.value());
+          .statusCode(NOT_FOUND.value());
     //@formatter:on
   }
 
@@ -267,10 +267,10 @@ public class UserControllerTest extends TestController {
       .post("/users")
       .then()
       .statusCode(HttpStatus.CREATED.value())
-      .body("id", greaterThan(0))
-      .body("firstName", equalTo(createRequest.firstName()))
-      .body("lastName", equalTo(createRequest.lastName()))
-      .body("organisation", equalTo(createRequest.organisation()));
+          .body("id", greaterThan(0))
+          .body("firstName", equalTo(createRequest.firstName()))
+          .body("lastName", equalTo(createRequest.lastName()))
+          .body("organisation", equalTo(createRequest.organisation()));
     //@formatter:on
   }
 }
