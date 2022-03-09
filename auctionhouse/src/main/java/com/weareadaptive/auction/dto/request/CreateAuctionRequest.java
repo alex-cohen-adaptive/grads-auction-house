@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 public record CreateAuctionRequest(
         @Pattern(regexp = "^[A-Za-z0-9.]+$")
-        @Size(max = 4)
+        @Size(max = 5)
         String symbol,
 
         @NotNull

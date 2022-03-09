@@ -26,6 +26,20 @@ public class AuctionService {
     this.userState = userState;
   }
 
+  //for testData class
+  public Auction create(User user, String symbol, int quantity, double minPrice) {
+    var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
+    auctionState.add(auctionLot);
+    return auctionLot;
+  }
+
+  public Auction create(Principal principal, String symbol, int quantity, double minPrice) {
+    var user = getUser(principal);
+    var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
+    auctionState.add(auctionLot);
+    return auctionLot;
+  }
+
   private User getUser(Principal principal) {
     var username = principal.getName();
     var user = userState.getByUsername(username);
@@ -34,7 +48,6 @@ public class AuctionService {
     }
     return user.get();
   }
-
 
   private Auction getAuction(int id) {
     var auction = auctionState.get(id);
@@ -47,20 +60,6 @@ public class AuctionService {
 
   private boolean isOwner(int id, Principal principal) {
     return (getUser(principal) == getAuction(id).getOwner());
-  }
-
-  public Auction create(Principal principal, String symbol, int quantity, double minPrice) {
-    var user = getUser(principal);
-    var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
-    auctionState.add(auctionLot);
-    return auctionLot;
-  }
-
-  //for testing
-  public Auction create(User user, String symbol, int quantity, double minPrice) {
-    var auctionLot = new Auction(auctionState.nextId(), user, symbol, quantity, minPrice);
-    auctionState.add(auctionLot);
-    return auctionLot;
   }
 
   public Auction get(int id) {
@@ -100,7 +99,7 @@ public class AuctionService {
     return auction.getClosingSummary();
   }
 
-  public ClosingSummary getAuctionSummary(Principal principal, int id) {
+  public ClosingSummary getAuctionSummary(int id) {
     return getAuction(id).getClosingSummary();
   }
 

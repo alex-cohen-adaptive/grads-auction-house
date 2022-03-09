@@ -345,7 +345,6 @@ class AuctionControllerTest extends TestController {
   @Test
   void bid_shouldReturn_403_IfOwner() {
     var bid = testData.bid1();
-    var user = testData.user4();
     var auctionId = testData.auction1().getId();
     var createRequest = new CreateBidRequest(
         bid.getQuantity(),
@@ -390,8 +389,6 @@ class AuctionControllerTest extends TestController {
 
   @Test
   void getAllBids_shouldReturn_403_IfNotOwner() {
-    var bid = testData.bid1();
-    var user = testData.user1();
     var auctionId = testData.auction1().getId();
 
     //@formatter:off

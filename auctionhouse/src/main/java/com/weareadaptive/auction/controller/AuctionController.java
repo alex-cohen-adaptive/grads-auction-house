@@ -49,13 +49,13 @@ public class AuctionController {
 
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public AuctionResponse getAuction(@PathVariable @Valid int id, Principal principal) {
+  public AuctionResponse getAuction(@PathVariable @Valid int id) {
     return map(auctionService.get(id));
   }
 
   @GetMapping()
   @ResponseStatus(HttpStatus.OK)
-  public Stream<AuctionResponse> getAllAuctions(Principal principal) {
+  public Stream<AuctionResponse> getAllAuctions() {
     return auctionService.getAllAuctions().map(Mapper::map);
   }
 
@@ -76,23 +76,24 @@ public class AuctionController {
 
   @GetMapping("{id}/bids")
   @ResponseStatus(HttpStatus.OK)
-  public Stream<BidResponse> getAllBids(@PathVariable @Valid int id, Principal principal) {
+  public Stream<BidResponse> getAllBids(@PathVariable @Valid int id,
+                                        Principal principal) {
     return auctionService.getAllBids(id, principal)
         .map(Mapper::map);
-
   }
 
   @PostMapping("{id}/close")
   @ResponseStatus(HttpStatus.OK)
-  public ClosingSummary closeAuction(@PathVariable @Valid int id, Principal principal) {
+  public ClosingSummary closeAuction(@PathVariable @Valid int id,
+                                     Principal principal) {
     return auctionService.closeAuction(id, principal);
   }
 
 
   @GetMapping("{id}/summary")
   @ResponseStatus(HttpStatus.OK)
-  public ClosingSummary getAuctionSummary(@PathVariable @Valid int id, Principal principal) {
-    return auctionService.getAuctionSummary(principal, id);
+  public ClosingSummary getAuctionSummary(@PathVariable @Valid int id) {
+    return auctionService.getAuctionSummary(id);
   }
 
 
