@@ -5,11 +5,179 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87d2b65d-4c22-41ba-8025-4e9777cc9691" name="Changes" comment="fixed all checkstyling...">
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuctionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuctionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateAuctionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateAuctionRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/AuctionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/AuctionControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/grads-auction-house.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_core_matchers_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_core_model_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_core_pactbroker_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_core_support_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_provider_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_provider_junit5_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__au_com_dius_pact_provider_junit5spring_4_3_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_ajalt_colormath_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_ajalt_mordant_1_2_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_zafarkhaja_java_semver_0_9_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_android_annotations_4_1_1_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_api_grpc_proto_google_common_protos_2_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_errorprone_error_prone_annotations_2_5_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_failureaccess_1_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_30_1_1_jre.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_j2objc_j2objc_annotations_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_17_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_java_diff_utils_diffutils_1_3_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_ibm_icu_icu4j_61_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_michael_bull_kotlin_result_kotlin_result_jvm_1_1_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vdurmont_semver4j_3_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_ext_tables_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_ast_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_builder_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_collection_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_data_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_dependency_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_format_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_html_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_misc_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_options_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_sequence_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vladsch_flexmark_flexmark_util_visitor_0_62_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_11_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_classgraph_classgraph_4_8_129.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_github_microutils_kotlin_logging_jvm_2_0_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_api_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_context_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_core_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_netty_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_lite_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_stub_1_42_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_ktor_ktor_http_jvm_1_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_ktor_ktor_io_jvm_1_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_ktor_ktor_utils_jvm_1_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_buffer_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http2_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_socks_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_common_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_proxy_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_resolver_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_tcnative_classes_2_0_46_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_4_1_73_Final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_pact_plugin_driver_core_0_0_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_perfmark_perfmark_api_0_23_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_projectreactor_reactor_core_3_4_14.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_3_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_json_javax_json_api_1_1_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_mail_1_5_0_b01.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_4_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_ST4_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr4_4_9_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr4_runtime_4_9_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr_runtime_3_5_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_collections4_4_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_client5_httpclient5_5_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_client5_httpclient5_fluent_5_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_core5_httpcore5_5_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_core5_httpcore5_h2_5_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tika_tika_core_1_27.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_atteo_evo_inflector_1_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_mojo_animal_sniffer_annotations_1_19.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_javax_json_1_0_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_reflect_1_6_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_6_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_6_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_6_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk8_1_6_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlinx_kotlinx_coroutines_core_jvm_1_5_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_reactivestreams_reactive_streams_1_0_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_12_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xml_apis_xml_apis_1_4_01.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/API.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuctionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuthenticationFacade.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/Iauthentication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/Mapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateAuctionRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateBidRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/response/AuctionOwnerResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/response/AuctionResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/response/BidResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/auction/AuctionClose.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/auction/AuctionCreated.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/auction/AuctionNotFound.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/bid/BidException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/user/UserException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/auction/Entity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/state/AuctionState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/AuctionControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_validation_jakarta_validation_api_2_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_56.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_56.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_56.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_2_0_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_validation_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_2_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_6_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_3_15.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webflux_5_3_15.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/configuration/ApplicationInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/configuration/ApplicationInit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/dto/UpdateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/UpdateUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/response/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/AuctionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/auction/AuctionException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/ExceptionHandlerControllerAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/ExceptionHandlerControllerAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/AuctionLot.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/auction/Auction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/AuctionState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/Bid.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/bid/Bid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/BusinessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/exception/business/BusinessException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/ClosingSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/auction/ClosingSummary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/Entity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/LostBid.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/bid/LostBid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/OrganisationDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/organization/OrganisationDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/state/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/UserState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/WinningBid.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/bid/WinningBid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/WonBid.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/bid/WonBid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/model/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/security/AuthenticationProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/security/AuthenticationProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionLotService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/TestData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/security/SecurityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/security/SecurityTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/security/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/security/TestController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +226,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
@@ -79,7 +248,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
@@ -168,6 +337,19 @@
       <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.UserControllerTest" />
       <option name="METHOD_NAME" value="shouldBlockUserReturnNotFound" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="auctionhouse-mvc-in-memory" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="auctionhouse-mvc-in-memory" />
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -277,7 +459,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="jpa" />
                       </list>
                     </value>
                   </entry>

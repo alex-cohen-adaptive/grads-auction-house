@@ -19,6 +19,7 @@ public abstract class IntegrationTest {
   protected String uri;
   @Autowired
   protected TestData testData;
+  protected static int INVALID_ID = 9999;
 
   @Container
   public static PostgreSQLContainer<?> postgreSQL =
