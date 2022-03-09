@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="87d2b65d-4c22-41ba-8025-4e9777cc9691" name="Changes" comment="fixed all checkstyling...">
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuctionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/controller/AuctionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateAuctionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/dto/request/CreateAuctionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/main/java/com/weareadaptive/auction/service/AuctionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/AuctionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auctionhouse/src/test/java/com/weareadaptive/auction/controller/AuctionControllerTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="25nYyXiFuklUJu0ai0UJb0G7FFG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.weareadaptive.auction" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.weareadaptive.auction.repository" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.AuctionControllerTest.getAllBids_shouldReturnIfExists">
+    <configuration name="AuctionControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auctionhouse-mvc-in-memory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.weareadaptive.auction.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.weareadaptive.auction.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.AuctionControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuctionControllerTest.close_shouldClose" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auctionhouse-mvc-in-memory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.weareadaptive.auction.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.weareadaptive.auction.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.AuctionControllerTest" />
+      <option name="METHOD_NAME" value="close_shouldClose" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuctionControllerTest.getAllBids_shouldReturnIfExists" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auctionhouse-mvc-in-memory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.weareadaptive.auction.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.weareadaptive.auction.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.AuctionControllerTest" />
+      <option name="METHOD_NAME" value="getAllBids_shouldReturnIfExists" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuctionControllerTest.getAuctionSummary_shouldGetSummary" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auctionhouse-mvc-in-memory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.weareadaptive.auction.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.weareadaptive.auction.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.AuctionControllerTest" />
+      <option name="METHOD_NAME" value="getAuctionSummary_shouldGetSummary" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest.shouldBlockUserReturnNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auctionhouse-mvc-in-memory" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.weareadaptive.auction.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.weareadaptive.auction.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.weareadaptive.auction.controller.UserControllerTest" />
+      <option name="METHOD_NAME" value="shouldBlockUserReturnNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuctionhouseWebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="auctionhouse-mvc-in-memory" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.weareadaptive.auction.AuctionhouseWebApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AuctionControllerTest.getAllBids_shouldReturnIfExists" />
+        <item itemvalue="JUnit.AuctionControllerTest.close_shouldClose" />
+        <item itemvalue="JUnit.AuctionControllerTest.getAuctionSummary_shouldGetSummary" />
+        <item itemvalue="JUnit.AuctionControllerTest" />
+        <item itemvalue="JUnit.UserControllerTest.shouldBlockUserReturnNotFound" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="87d2b65d-4c22-41ba-8025-4e9777cc9691" name="Changes" comment="" />
+      <created>1646164572555</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1646164572555</updated>
+      <workItem from="1646164573942" duration="10055000" />
+      <workItem from="1646235156270" duration="14735000" />
+      <workItem from="1646402370773" duration="20871000" />
+      <workItem from="1646424712734" duration="49564000" />
+      <workItem from="1646772438081" duration="1313000" />
+      <workItem from="1646784698657" duration="1291000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added Controller and Service functionality for...&#10;Adding users&#10;Updating users (edit firstname,lastname,organization)&#10;Get user by id&#10;Get all users&#10;Blocking/Unblocking Users">
+      <created>1646175106222</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1646175106222</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Git merge">
+      <created>1646251920868</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1646251920868</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Jean Francois Code review and refactoring&#10;fix:&#10;-Changed getting user hashmap and instead got a stream of users&#10;this way as to not expose userlist&#10;refactor:&#10;-checkstyle elements just applied&#10;bug fixes:&#10;-null pointer exceptin fixes&#10;&#10;Coming up need to handle null pointer errors and throw another exception">
+      <created>1646316204946</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1646316204946</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Started implementing the auction house app &#10;feats:&#10;fix:&#10;refactor:&#10;bug fixes:">
+      <created>1646316767500</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1646316767500</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Made significant progress in the auction app build + testing&#10;&#10;feats:&#10;-added custom exception classes for error&#10;-implemented service and controller for auctions&#10;-added authentication provider to the auction controller class&#10;-setup preauth roles for a user&#10;bug fixes:&#10;-Removed userid for the current user, now using session storage based on&#10;token to retrieve users&#10;-fixed several loading issues with the testClass&#10;docs:&#10;-Added description to the readme detailing the project &#10;refactor:&#10;-Refactored 80% of my project using checkstyle&#10;-made edits to the test controller class to handle errors&#10;-changed around packaging for organization&#10;&#10;Next up working on bids and closing auction build + testing">
+      <created>1646413111714</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1646413111714</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Completed all service,controller and testing, project finished, for now...">
+      <created>1646432486582</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1646432486582</updated>
+    </task>
+    <task id="LOCAL-00007" summary="So i fixed the todos, some of them were JFs others were unecessary cause of DTO. Refactored code so that it contains only Principal and no authentication interface. &#10;&#10;Checkstyle is a nightmare, i fixed the checkstyle error, it just creates another checkstyle error, not sure what todo....">
+      <created>1646680293757</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1646680293757</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed all checkstyling...">
+      <created>1646749013775</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1646749013775</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added Controller and Service functionality for...&#10;Adding users&#10;Updating users (edit firstname,lastname,organization)&#10;Get user by id&#10;Get all users&#10;Blocking/Unblocking Users" />
+    <MESSAGE value="Git merge" />
+    <MESSAGE value="Jean Francois Code review and refactoring&#10;fix:&#10;-Changed getting user hashmap and instead got a stream of users&#10;this way as to not expose userlist&#10;refactor:&#10;-checkstyle elements just applied&#10;bug fixes:&#10;-null pointer exceptin fixes&#10;&#10;Coming up need to handle null pointer errors and throw another exception" />
+    <MESSAGE value="Started implementing the auction house app &#10;feats:&#10;fix:&#10;refactor:&#10;bug fixes:" />
+    <MESSAGE value="Made significant progress in the auction app build + testing&#10;&#10;feats:&#10;-added custom exception classes for error&#10;-implemented service and controller for auctions&#10;-added authentication provider to the auction controller class&#10;-setup preauth roles for a user&#10;bug fixes:&#10;-Removed userid for the current user, now using session storage based on&#10;token to retrieve users&#10;-fixed several loading issues with the testClass&#10;docs:&#10;-Added description to the readme detailing the project &#10;refactor:&#10;-Refactored 80% of my project using checkstyle&#10;-made edits to the test controller class to handle errors&#10;-changed around packaging for organization&#10;&#10;Next up working on bids and closing auction build + testing" />
+    <MESSAGE value="Completed all service,controller and testing, project finished, for now..." />
+    <MESSAGE value="So i fixed the todos, some of them were JFs others were unecessary cause of DTO. Refactored code so that it contains only Principal and no authentication interface. &#10;&#10;Checkstyle is a nightmare, i fixed the checkstyle error, it just creates another checkstyle error, not sure what todo...." />
+    <MESSAGE value="fixed all checkstyling..." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed all checkstyling..." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.springframework.context.ApplicationContextException" package="org.springframework.context" />
+          <option name="timeStamp" value="13" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
