@@ -1,20 +1,33 @@
 package com.weareadaptive.auction.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+import java.util.Set;
+
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
-public class User implements Entity {
-  private final int id;
-  private final String username;
-  private final String password;
-  private final boolean isAdmin;
-  private String firstName;
-  private String lastName;
-  private String organisation;
-  private String phone;
-  private String email;
-  private boolean blocked;
+@javax.persistence.Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(
+        name = "user",
+        uniqueConstraints =
+        @UniqueConstraint(
+                name = "username_unique",
+                columnNames = "username"
+        )
+)
+public class User {
 
+/*
   public User(
       int id,
       String username,
@@ -56,73 +69,85 @@ public class User implements Entity {
     this.lastName = lastName;
     this.organisation = organisation;
     this.isAdmin = isAdmin;
-  }
+  }*/
 
-  @Override
-  public String toString() {
-    return "User{"
-        + "username='" + username + '\''
-        + '}';
-  }
+    @Column(
+            name = "username",
+            nullable = false
+    )
+    private String username;
 
-  public String getUsername() {
-    return username;
-  }
+    @Id
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "organization_sequence"
+    )
+    private Long userid;
 
-  public boolean validatePassword(String password) {
-    return this.password.equals(password);
-  }
+    @Column(
+            nullable = false,
+            name="first_name"
+    )
+    private String firstName;
 
-  public String getFirstName() {
-    return firstName;
-  }
+    @Column(
+            nullable = false,
+            name="last_name"
+    )
+    private String lastName;
 
-  //TODO: Add validation
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+    @Column(nullable = false)
+    private String password;
 
-  public String getLastName() {
-    return lastName;
-  }
+    @Column(nullable = false)
+    private String organization;
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public String getOrganisation() {
-    return organisation;
-  }
+    public Long getUserid() {
+        return userid;
+    }
 
-  public void setOrganisation(String organisation) {
-    this.organisation = organisation;
-  }
+    public void setUserid(Long userid) {
+        this.userid = userid;
+    }
 
-  public boolean isAdmin() {
-    return isAdmin;
-  }
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public boolean isBlocked() {
-    return blocked;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public void block() {
-    blocked = true;
-  }
+    public String getOrganization() {
+        return organization;
+    }
 
-  public void unblock() {
-    blocked = false;
-  }
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+/*
+    @OneToMany(mappedBy = "user")
+    private Set<Bid> bids;*/
 }
