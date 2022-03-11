@@ -56,7 +56,7 @@ public class Auction {
   @OneToMany()
   private List<Bid> bids;
 
-  private Supplier<Instant> TimeProvider;
+  private Instant TimeProvider;
 
   public int getId() {
     return id;
