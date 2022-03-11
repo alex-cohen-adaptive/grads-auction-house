@@ -2,11 +2,8 @@ package com.weareadaptive.auction.model.user;
 
 import com.weareadaptive.auction.model.auction.Auction;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "auctionuser")
 public class AuctionUser {
 
+  @Column(name = "username")
   private String username;
 
   @Id
@@ -26,15 +24,22 @@ public class AuctionUser {
   )
   private int id;
 
+  @Column(name = "first_name")
   private String firstName;
+
+  @Column(name = "last_name")
   private String lastName;
 
+  @Column(name = "password")
   private String password;
 
+  @Column(name = "organization")
   private String organization;
 
+  @Column(name = "is_blocked")
   private boolean isBlocked;
 
+  @Column(name = "is_admin")
   private boolean isAdmin;
 
   public String getUsername() {

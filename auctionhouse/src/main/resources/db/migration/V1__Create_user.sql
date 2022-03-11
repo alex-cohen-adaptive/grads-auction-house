@@ -21,27 +21,31 @@ CREATE TABLE auctionuser
 
 CREATE TABLE auction
 (
-    id            SERIAL PRIMARY KEY,
-    symbol        VARCHAR(5) UNIQUE                      NOT NULL,
-    quantity      BIGINT                                 NOT NULL,
-    min_price     DOUBLE PRECISION                       NOT NULL,
-    time_provider TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-    status        VARCHAR(20)                            NOT NULL,
-    owner         VARCHAR(50)                            NOT NULL REFERENCES auctionuser (username)
+    id              SERIAL PRIMARY KEY,
+    symbol          VARCHAR(5) UNIQUE                      NOT NULL,
+    quantity        BIGINT                                 NOT NULL,
+    min_price       DOUBLE PRECISION                       NOT NULL,
+    time_provider   TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    status          VARCHAR(20)                            NOT NULL,
+    closing_summary TEXT,
+    owner           VARCHAR(50)                            NOT NULL REFERENCES auctionuser (username),
+    CONSTRAINT fk_auction_owner
+        FOREIGN KEY (owner)
+            REFERENCES auctionuser (username)
 );
 
-/*CREATE TABLE bid
+CREATE TABLE bid
 (
     bid_id       SERIAL PRIMARY KEY,
-    name         VARCHAR(50)      NOT NULL,
-    quantity     BIGINT           NOT NULL,
-    price        DOUBLE PRECISION NOT NULL,
---     state      STATE DEFAULT 'PENDING' NOT NULL,
-    win_quantity BIGINT DEFAULT 0,
-    username   SERIAL                  NOT NULL REFERENCES auctionUser (id),
-    auction_id SERIAL                  NOT NULL REFERENCES auction (id)
+    name         VARCHAR(50)                   NOT NULL,
+    quantity     BIGINT                        NOT NULL,
+    price        DOUBLE PRECISION              NOT NULL,
+    state        VARCHAR(20) DEFAULT 'PENDING' NOT NULL,
+    win_quantity BIGINT      DEFAULT 0,
+    username     SERIAL                        NOT NULL REFERENCES auctionUser (id),
+    auction_id   SERIAL                        NOT NULL REFERENCES auction (id)
 );
-*/
+
 
 INSERT INTO auctionuser (username, password, first_name, last_name, organization, is_admin)
 VALUES ('admin', 'adminpassword', 'andrew', 'ryan', 'rapture', true);

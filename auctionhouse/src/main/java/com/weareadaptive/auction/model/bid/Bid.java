@@ -2,12 +2,7 @@ package com.weareadaptive.auction.model.bid;
 
 import com.weareadaptive.auction.exception.business.BusinessException;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.user.AuctionUser;
@@ -27,17 +22,22 @@ public class Bid {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   int id;
 
-  private String auctionUser;
-
+  @Column(name = "quantity")
   private int quantity;
 
+  @Column(name = "price")
   private double price;
 
-  private State state;
+  @Column(name = "state")
+  private String state;
 
-  @ManyToOne
-  private Auction auction;
+  @Column(name = "owner")
+  private String owner;
 
+  @Column(name = "acution_id")
+  private int auctionId;
+
+  @Column(name = "win_quantity")
   private int winQuantity;
 
   public int getQuantity() {
@@ -45,7 +45,7 @@ public class Bid {
   }
 
   public String getAuctionUser() {
-    return auctionUser;
+    return owner;
   }
 
   public double getPrice() {
@@ -56,7 +56,7 @@ public class Bid {
     return winQuantity;
   }
 
-  public State getState() {
+  public String getState() {
     return state;
   }
 
@@ -84,7 +84,7 @@ public class Bid {
 
   @Override
   public String toString() {
-    return "user=" + auctionUser
+    return "user=" + owner
         + ", price=" + price
         + ", quantity=" + quantity;
   }

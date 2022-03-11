@@ -14,19 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,31 +29,30 @@ import java.util.function.Supplier;
 public class Auction {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  @Column(name= "auction_id")
+  int id;
 
+  @Column(name = "symbol")
   private String symbol;
 
+  @Column(name = "min_price")
   private double minPrice;
 
+  @Column(name = "quantity")
   private int quantity;
 
   @ColumnDefault("OPEN")
   private String status = "OPEN";
 
+  @Column(name = "owner")
   private String owner;
 
-  @OneToMany()
-  private List<Bid> bids;
+  @Column(name = "bid_id")
+  private int bidId;
 
+  @Column(name = "time_provider")
   private Instant TimeProvider;
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
 
 
 /*  private Set<Bid> bids;
