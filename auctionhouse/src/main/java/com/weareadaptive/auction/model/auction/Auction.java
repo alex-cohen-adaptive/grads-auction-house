@@ -4,82 +4,77 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.math.BigDecimal.valueOf;
 import static java.util.Collections.reverseOrder;
-import static java.util.Collections.unmodifiableList;
 import static java.util.Comparator.comparing;
-import static java.util.Comparator.comparingInt;
-import static org.apache.logging.log4j.util.Strings.isBlank;
 
-import com.weareadaptive.auction.exception.auction.AuctionClose;
-import com.weareadaptive.auction.exception.business.BusinessException;
 import com.weareadaptive.auction.model.bid.Bid;
-import com.weareadaptive.auction.model.bid.WinningBid;
-import com.weareadaptive.auction.model.user.User;
-import java.math.BigDecimal;
+import com.weareadaptive.auction.model.user.AuctionUser;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
+@Entity(name = "auction")
+public class Auction {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-public class Auction implements Entity {
-  private final int id;
-  private final User owner;
-  private final String symbol;
-  private final double minPrice;
-  private final int quantity;
-  private final List<Bid> bids;
+  private String symbol;
+
+  private double minPrice;
+
+  private int quantity;
+
+  @ColumnDefault("OPEN")
+  private String status = "OPEN";
+
+  private String owner;
+
+  @OneToMany()
+  private List<Bid> bids;
+
+  private Supplier<Instant> TimeProvider;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+
+/*  private Set<Bid> bids;
   private Status status;
   private ClosingSummary closingSummary;
-  private Supplier<Instant> timeProvider;
+  private Supplier<Instant> timeProvider;*/
 
-  public Auction(int id, User owner, String symbol, int quantity, double minPrice) {
-    if (owner == null) {
-      throw new BusinessException("owner cannot be null");
-    }
-    if (isBlank(symbol)) {
-      throw new BusinessException("symbol cannot be null or empty");
-    }
-    if (minPrice < 0) {
-      throw new BusinessException("minPrice cannot be bellow 0");
-    }
-    if (quantity < 0) {
-      throw new BusinessException("quantity must be above 0");
-    }
-    this.id = id;
-    this.owner = owner;
-    this.symbol = symbol.toUpperCase().trim();
-    this.quantity = quantity;
-    this.minPrice = minPrice;
-    bids = new ArrayList<>();
-    status = Status.OPENED;
-    timeProvider = Instant::now;
-  }
 
-  public Status getStatus() {
-    return status;
-  }
-
-  public User getOwner() {
-    return owner;
-  }
-
-  public String getSymbol() {
-    return symbol;
-  }
-
-  public ClosingSummary getClosingSummary() {
-    if (Status.CLOSED != status) {
-      throw new AuctionClose("AuctionLot must be closed to have a closing summary");
-    }
-    return closingSummary;
-  }
-
-  public List<Bid> getBids() {
-    return unmodifiableList(bids);
-  }
-
-  public Bid bid(User bidder, int quantity, double price) {
-    if (status == Status.CLOSED) {
+  public Bid bid(AuctionUser bidder, int quantity, double price) {
+/*    if (status == Status.CLOSED) {
       throw new BusinessException("Cannot close an already closed.");
     }
 
@@ -97,10 +92,11 @@ public class Auction implements Entity {
 
     var bid = new Bid(bidder, quantity, price);
     bids.add(bid);
-    return bid;
+    return bid;*/
+    return null;
   }
 
-
+/*
   public void close() {
     if (status == Status.CLOSED) {
       throw new AuctionClose("Cannot close because already closed.");
@@ -132,8 +128,8 @@ public class Auction implements Entity {
         this.quantity - availableQuantity,
         revenue,
         timeProvider.get());
-  }
-
+  }*/
+/*
   public int getId() {
     return id;
   }
@@ -152,7 +148,8 @@ public class Auction implements Entity {
 
   public void setTimeProvider(Supplier<Instant> timeProvider) {
     this.timeProvider = timeProvider;
-  }
+  }*/
+/*
 
   public List<Bid> getLostBids(User user) {
     return bids
@@ -168,6 +165,9 @@ public class Auction implements Entity {
         .filter(b -> b.originalBid().getUser() == user)
         .toList();
   }
+  public List<Bid> getBids() {
+    return unmodifiableList(bids);
+  }
 
   @Override
   public String toString() {
@@ -177,9 +177,12 @@ public class Auction implements Entity {
         + ", status=" + status
         + '}';
   }
+*/
 
   public enum Status {
     OPENED,
     CLOSED
   }
+
+
 }

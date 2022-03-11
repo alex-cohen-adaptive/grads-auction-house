@@ -1,13 +1,17 @@
 package com.weareadaptive.auction;
 
 import com.github.javafaker.Faker;
+import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
+import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.bid.Bid;
-import com.weareadaptive.auction.model.user.User;
+import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.service.AuctionService;
 import com.weareadaptive.auction.service.UserService;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -20,11 +24,11 @@ public class TestData {
   public static final String USER_AUTH_TOKEN = "Bearer USER:userpassword";
   public static final int MAX_SIZE = 4;
   private static int count = 1;
-  private final UserService userService;
+  public final UserService userService;
   private final AuctionService auctionService;
   private final Faker faker;
 
-  private final List<User> users = new ArrayList<>(MAX_SIZE);
+  private final List<AuctionUser> auctionUsers = new ArrayList<>(MAX_SIZE);
 
   private final List<Auction> auctions = new ArrayList<>(MAX_SIZE);
 
@@ -39,31 +43,31 @@ public class TestData {
   @EventListener(ApplicationReadyEvent.class)
   public void createInitData() {
     for (int i = 0; i < MAX_SIZE; i++) {
-      users.add(createRandomUser());
+      auctionUsers.add(createRandomUser());
     }
     for (int i = 0; i < MAX_SIZE; i++) {
       auctions.add(createRandomAuction());
     }
-    auctions.get(3).close();
+/*    auctions.get(3).close();
     for (int i = 0; i < MAX_SIZE; i++) {
       bids.add(createRandomBid());
-    }
+    }*/
   }
 
-  public User user1() {
-    return users.get(0);
+  public AuctionUser user1() {
+    return auctionUsers.get(0);
   }
 
-  public User user2() {
-    return users.get(1);
+  public AuctionUser user2() {
+    return auctionUsers.get(1);
   }
 
-  public User user3() {
-    return users.get(2);
+  public AuctionUser user3() {
+    return auctionUsers.get(2);
   }
 
-  public User user4() {
-    return users.get(3);
+  public AuctionUser user4() {
+    return auctionUsers.get(3);
   }
 
 
@@ -116,27 +120,25 @@ public class TestData {
     return getToken(user4());
   }
 
-  public User createRandomUser() {
+  public AuctionUser createRandomUser() {
     var name = faker.name();
-    return (
-      userService.create(
+    var userRequest = new CreateUserRequest(
         name.username(),
         PASSWORD,
         name.firstName(),
         name.lastName(),
         faker.company().name()
-      ));
+    );
+    return userService.create(userRequest);
   }
 
   public Auction createRandomAuction() {
     var stock = faker.stock();
-    return (
-      auctionService.create(
-        user4(),
+    var auctionRequest = new CreateAuctionRequest(
         stock.nsdqSymbol(),
-        faker.number().randomDigitNotZero(),
-        faker.number().randomDouble(1, 1, 300)));
-
+        (float) faker.number().randomDouble(1, 1, 300),
+        faker.number().randomDigitNotZero());
+    return auctionService.create(user4().getUsername(), auctionRequest);
   }
 
   public int getRandomIndex() {
@@ -147,21 +149,22 @@ public class TestData {
   public Bid createRandomBid() {
     var index = getRandomIndex();
     var value = (count++) % 3;
-    var priceIncrement =  faker.number().randomDouble(1, 300, 600);
-    var bid = new Bid(
+    var priceIncrement = faker.number().randomDouble(1, 300, 600);
+/*    var bid = new Bid(
         users.get(value),
         faker.number().numberBetween(5, 200),
         auctions.get(index).getMinPrice() + priceIncrement);
     auctions.get(value).bid(
         bid.getUser(),
         bid.getQuantity(),
-        bid.getPrice());
-    return bid;
+        bid.getPrice());*/
+    return null;
+//    return bid;
   }
 
 
-  public String getToken(User user) {
-    return "Bearer " + user.getUsername() + ":" + PASSWORD;
+  public String getToken(AuctionUser auctionUser) {
+    return "Bearer " + auctionUser.getUsername() + ":" + PASSWORD;
   }
 
   public enum Stock {

@@ -41,16 +41,14 @@ public class AuctionController {
     return map(
         auctionService.create(
             principal,
-            createAuctionRequest.symbol(),
-            createAuctionRequest.quantity(),
-            createAuctionRequest.minPrice()
+            createAuctionRequest
         ));
   }
 
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public AuctionResponse getAuction(@PathVariable @Valid int id) {
-    return map(auctionService.get(id));
+    return map(auctionService.getAuction(id));
   }
 
   @GetMapping()
@@ -60,6 +58,7 @@ public class AuctionController {
   }
 
 
+/*
   @PostMapping("{id}/bid")
   @ResponseStatus(HttpStatus.CREATED)
   public BidResponse bidAuction(@PathVariable @Valid int id,
@@ -73,6 +72,7 @@ public class AuctionController {
             createBidRequest.quantity()
         ));
   }
+*/
 
   @GetMapping("{id}/bids")
   @ResponseStatus(HttpStatus.OK)

@@ -26,7 +26,7 @@ import org.springframework.http.HttpStatus;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuctionControllerTest extends TestController {
+class AuctionControllerTest extends IntegrationTest {
 
   public static final String END_POINT = "/auctions";
 
@@ -43,6 +43,8 @@ class AuctionControllerTest extends TestController {
         testData.auction1().getSymbol(),
         (float) testData.auction1().getMinPrice(),
         testData.auction1().getQuantity());
+//    System.out.println(testData.user1Token());
+//    System.out.println(testData.userService.getUser(testData.user1().getId()));
 
     //@formatter:off
     given()
@@ -210,7 +212,7 @@ class AuctionControllerTest extends TestController {
         .log().all()
         .statusCode(HttpStatus.OK.value())
         .body("id", equalTo(testData.auction1().getId()))
-        .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
+        .body("owner", equalTo(testData.auction1().getId()))
         .body("symbol", equalTo(testData.auction1().getSymbol()))
         .body("quantity", equalTo(testData.auction1().getQuantity()))
         .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
@@ -231,7 +233,7 @@ class AuctionControllerTest extends TestController {
         .log().all()
         .statusCode(HttpStatus.OK.value())
         .body("id", equalTo(testData.auction1().getId()))
-        .body("owner", equalTo(testData.auction1().getOwner().getUsername()))
+        .body("owner", equalTo(testData.auction1().getOwner()))
         .body("symbol", equalTo(testData.auction1().getSymbol()))
         .body("quantity", equalTo(testData.auction1().getQuantity()))
         .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));

@@ -5,25 +5,25 @@ import com.weareadaptive.auction.dto.response.BidResponse;
 import com.weareadaptive.auction.dto.response.UserResponse;
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.bid.Bid;
-import com.weareadaptive.auction.model.user.User;
+import com.weareadaptive.auction.model.user.AuctionUser;
 
 public class Mapper {
   private Mapper() {
   }
 
-  public static UserResponse map(User user) {
+  public static UserResponse map(AuctionUser auctionUser) {
     return new UserResponse(
-      user.getId(),
-      user.getUsername(),
-      user.getFirstName(),
-      user.getLastName(),
-      user.getOrganisation());
+      auctionUser.getId(),
+      auctionUser.getUsername(),
+      auctionUser.getFirstName(),
+      auctionUser.getLastName(),
+      auctionUser.getOrganization());
   }
 
   public static AuctionResponse map(Auction auction) {
     return new AuctionResponse(
       auction.getId(),
-      auction.getOwner().getUsername(),
+      auction.getOwner(),
       auction.getSymbol(),
       auction.getMinPrice(),
       auction.getQuantity());
@@ -32,10 +32,11 @@ public class Mapper {
 
   public static BidResponse map(Bid bid) {
     return new BidResponse(
-      bid.getUser().getUsername(),
+      bid.getAuctionUser(),
       bid.getQuantity(),
       bid.getPrice()
     );
   }
+
 
 }

@@ -7,9 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
 import com.weareadaptive.auction.exception.auction.AuctionClose;
 import com.weareadaptive.auction.exception.auction.AuctionCreated;
-import com.weareadaptive.auction.exception.auction.AuctionNotFound;
 import com.weareadaptive.auction.exception.bid.BidException;
-import com.weareadaptive.auction.exception.business.BusinessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,8 +32,8 @@ public class ExceptionHandlerControllerAdvice {
         BAD_REQUEST);
   }
 
-  @ExceptionHandler(AuctionNotFound.class)
-  public ResponseEntity<Object> handleNotFoundException(AuctionNotFound ex) {
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     //ResponseEntity.notFound().build();
@@ -61,8 +59,8 @@ public class ExceptionHandlerControllerAdvice {
         FORBIDDEN);
   }
 
-  @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<Object> handleAuctionAlreadyClosed(BusinessException ex) {
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<Object> handleAuctionAlreadyClosed(BadRequestException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(

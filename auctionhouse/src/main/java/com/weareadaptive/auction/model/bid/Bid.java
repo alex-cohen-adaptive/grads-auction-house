@@ -1,40 +1,51 @@
 package com.weareadaptive.auction.model.bid;
 
 import com.weareadaptive.auction.exception.business.BusinessException;
-import com.weareadaptive.auction.model.user.User;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.weareadaptive.auction.model.auction.Auction;
+import com.weareadaptive.auction.model.user.AuctionUser;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Bid {
-  private final User user;
-  private final int quantity;
-  private final double price;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  int id;
+
+  private String auctionUser;
+
+  private int quantity;
+
+  private double price;
+
   private State state;
+
+  @ManyToOne
+  private Auction auction;
+
   private int winQuantity;
-
-  public Bid(User user, int quantity, double price) {
-    if (user == null) {
-      throw new BusinessException("user cannot be null");
-    }
-
-    if (price <= 0) {
-      throw new BusinessException("price must be above 0");
-    }
-
-    if (quantity <= 0) {
-      throw new BusinessException("quantity must be above 0");
-    }
-
-    this.price = price;
-    this.user = user;
-    this.quantity = quantity;
-    state = State.PENDING;
-  }
 
   public int getQuantity() {
     return quantity;
   }
 
-  public User getUser() {
-    return user;
+  public String getAuctionUser() {
+    return auctionUser;
   }
 
   public double getPrice() {
@@ -49,13 +60,13 @@ public class Bid {
     return state;
   }
 
-  public void lost() {
+ /* public void lost() {
     if (state != State.PENDING) {
       throw new BusinessException("Must be a pending bid");
     }
-
     state = State.LOST;
-  }
+  }*/
+/*
 
   public void win(int winQuantity) {
     if (state != State.PENDING) {
@@ -69,12 +80,13 @@ public class Bid {
     state = State.WIN;
     this.winQuantity = winQuantity;
   }
+*/
 
   @Override
   public String toString() {
-    return "user=" + user.getUsername()
-      + ", price=" + price
-      + ", quantity=" + quantity;
+    return "user=" + auctionUser
+        + ", price=" + price
+        + ", quantity=" + quantity;
   }
 
   public enum State {
