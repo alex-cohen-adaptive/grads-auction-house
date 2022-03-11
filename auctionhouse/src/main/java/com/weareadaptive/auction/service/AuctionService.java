@@ -1,24 +1,32 @@
 package com.weareadaptive.auction.service;
 
+import static java.util.Collections.reverseOrder;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
+
 import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
 import com.weareadaptive.auction.dto.request.CreateBidRequest;
 import com.weareadaptive.auction.exception.BadRequestException;
+import com.weareadaptive.auction.exception.NotAllowedException;
 import com.weareadaptive.auction.exception.NotFoundException;
-import com.weareadaptive.auction.exception.bid.BidException;
+import com.weareadaptive.auction.exception.auction.AuctionClose;
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.auction.ClosingSummary;
 import com.weareadaptive.auction.model.bid.Bid;
-
-import java.security.Principal;
-import java.util.Optional;
-import java.util.stream.Stream;
-
+import com.weareadaptive.auction.model.bid.WinningBid;
 import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.repository.AuctionRepository;
+import com.weareadaptive.auction.repository.BidRepository;
 import com.weareadaptive.auction.repository.UserRepository;
+import java.math.BigDecimal;
+import java.security.Principal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class AuctionService {
@@ -29,21 +37,9 @@ public class AuctionService {
   AuctionRepository auctionRepository;
   public static final String AUCTION_LOT_ENTITY = "AuctionLot";
 
+  @Autowired
+  BidRepository bidRepository;
 
-/*  private final Auct
-  private final AuctionState auctionState;
-
-  public AuctionService(AuctionState auctionState) {
-    this.auctionState = auctionState;
-  }*/
-
-  public void auctionExists(String symbol) {
-    if (auctionRepository.existsBySymbol(symbol)) {
-      throw new BadRequestException("Auction already exists!");
-    }
-  }
-
-  //for testData class
   public Auction create(Principal principal, CreateAuctionRequest createAuction) {
     auctionExists(createAuction.symbol());
     var username = principal.getName();
@@ -58,19 +54,89 @@ public class AuctionService {
     return auction;
   }
 
-  public Auction create(String username, CreateAuctionRequest createAuction) {
-    Auction auction = Auction.builder()
-        .minPrice(createAuction.minPrice())
-        .quantity(createAuction.quantity())
-        .owner(username)
-        .symbol(createAuction.symbol())
-        .status("OPEN")
-        .build();
-    auctionRepository.save(auction);
-    return auction;
+  public Auction getAuction(int id) {
+    var auction = auctionRepository.getById(id);
+    if (auction.isEmpty()) {
+      throw new NotFoundException("Auction not found!");
+    }
+    return auction.get();
   }
 
+  public Auction getAuction(String symbol) {
+    var auction = auctionRepository.getBySymbol(symbol);
+    if (auction.isEmpty()) {
+      throw new NotFoundException("Auction not found!");
+    }
+    return auction.get();
+  }
 
+  public Stream<Auction> getAllAuctions() {
+    return auctionRepository.findAll().stream();
+  }
+
+  public Bid bid(Principal principal, int auctionId, CreateBidRequest createBidRequest) {
+    var auction = getAuction(auctionId);
+    var user = principal.getName();
+
+    if (isOwner(auction, principal)) {
+      throw new NotAllowedException("Owner cannot bid on his/her own auction!");
+    }
+    if (createBidRequest.price() < auction.getMinPrice()) {
+      throw new BadRequestException("Invalid! Bid price must be >= auction price");
+    }
+
+    var bid = Bid
+        .builder()
+        .price(createBidRequest.price())
+        .quantity(createBidRequest.quantity())
+        .username(user)
+        .auctionId(auctionId)
+        .state("PENDING")
+        .build();
+
+    bidRepository.save(bid);
+    return bid;
+  }
+
+  public Stream<Bid> getAllBids(int auctionId, Principal principal) {
+    var auction = getAuction(auctionId);
+    if (!isOwner(auction, principal)) {
+      throw new NotAllowedException("Only owner is allowed to get all bids");
+    }
+    return bidRepository.getAllBidsByAuctionId(auctionId).stream();
+  }
+
+  public ClosingSummary closeAuction(int auctionId, Principal principal) {
+    var auction = getAuction(auctionId);
+    isClosed(auction);
+
+    if (!isOwner(auction, principal)) {
+      throw new NotAllowedException("Only the owner can close his/her auction!");
+    }
+    var closingSummary = close(auctionId);
+    auction.setClosingSummary(closingSummary.toString());
+    auctionRepository.save(auction);
+    return closingSummary;
+  }
+
+  public String getAuctionSummary(int id) {
+    var auction = getAuction(id);
+
+    if (!auction.isClosed()) {
+      throw new NotAllowedException("Error! cannot get a summary from an open auction!");
+    }
+    return auction.getClosingSummary();
+
+  }
+
+  /*====================Private Methods====================*/
+
+
+  private void isClosed(Auction auction) {
+    if (auction.isClosed()) {
+      throw new NotAllowedException("Cannot perform this action! Auction is closed!");
+    }
+  }
 
   private AuctionUser getUser(Principal principal) {
     var username = principal.getName();
@@ -81,57 +147,53 @@ public class AuctionService {
     return user.get();
   }
 
-  public Auction getAuction(int id) {
-    var user = auctionRepository.getById(id);
-    if (user.isEmpty()) {
-      throw new NotFoundException("Auction not found!");
-    }
-    return user.get();
+  private boolean isOwner(Auction auction, Principal principal) {
+    return (getUser(principal).getUsername().equals(auction.getOwner()));
   }
 
-  private boolean isOwner(int id, Principal principal) {
-    return (getUser(principal).getUsername().equals(getAuction(id).getOwner()));
-  }
-
-  public Stream<Auction> getAllAuctions() {
-    return auctionRepository.findAll().stream();
-  }
-
-  public Bid bid(Principal principal, int auctionId, CreateBidRequest createBidRequest) {
+  private ClosingSummary close(int auctionId) {
     var auction = getAuction(auctionId);
-    var user = getUser(principal);
-    if (isOwner(auctionId, principal)) {
-      throw new BidException("Owner cannot bid on his/her own auction!");
+    if (auction.isClosed()) {
+      throw new AuctionClose("Cannot close because already closed.");
     }
-    return null;
-    /*return auction.bid(
-        user,
-        quantity,
-        price
-    );*/
-  }
 
-  public Stream<Bid> getAllBids(int id, Principal principal) {
-/*    if (!isOwner(id, principal)) {
-      throw new BidException("Only owner is allowed to get all bids");
-    }
-    return auctionState.get(id).getBids().stream();*/
-    return null;
-  }
+    List<Bid> bids = bidRepository.getAllBidsByAuctionId(auctionId);
 
-  public ClosingSummary closeAuction(int id, Principal principal) {
-/*    if (!isOwner(id, principal)) {
-      throw new BidException("Only the owner can close his/her auction!");
-    }
-    var auction = getAuction(id);
+
     auction.close();
-    return auction.getClosingSummary();*/
-    return null;
+
+    var orderedBids = bids.stream().sorted(reverseOrder(comparing(Bid::getPrice))
+        .thenComparing(reverseOrder(comparingInt(Bid::getQuantity)))).toList();
+    var availableQuantity = auction.getQuantity();
+    var revenue = BigDecimal.ZERO;
+    var winningBids = new ArrayList<WinningBid>();
+
+    for (Bid bid : orderedBids) {
+      if (availableQuantity > 0) {
+        var bidQuantity = Math.min(availableQuantity, bid.getQuantity());
+
+        winningBids.add(new WinningBid(bidQuantity, bid));
+        bid.win(bidQuantity);
+        availableQuantity -= bidQuantity;
+        revenue = revenue.add(BigDecimal.valueOf(bidQuantity * bid.getPrice()));
+      } else {
+        bid.lost();
+      }
+    }
+
+    return
+        new ClosingSummary(
+            unmodifiableList(winningBids),
+            auction.getQuantity() - availableQuantity,
+            revenue,
+            Instant.now());
+
   }
 
-  public ClosingSummary getAuctionSummary(int id) {
-//    return getAuction(id).getClosingSummary();
-    return null;
+  private void auctionExists(String symbol) {
+    if (auctionRepository.existsBySymbol(symbol)) {
+      throw new BadRequestException("Auction already exists!");
+    }
   }
 
 }

@@ -7,9 +7,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -17,15 +18,20 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import com.weareadaptive.auction.TestData;
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
+import com.weareadaptive.auction.service.UserService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuctionUserControllerTest extends IntegrationTest {
+  @Autowired
+  public UserService userService;
+
 
   @BeforeEach
   public void initialiseRestAssuredMockMvcStandalone() {
@@ -53,6 +59,9 @@ public class AuctionUserControllerTest extends IntegrationTest {
         .log().all()
         .statusCode(BAD_REQUEST.value())
         .body("message", containsString("already exist"));
+
+    assuserService.getUser(createRequest.username()));
+    ;
   }
 
   @DisplayName("getAll should return all users")
@@ -187,15 +196,15 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .put("/users/{id}/block")
       .then().statusCode(NO_CONTENT.value());
     //@formatter:on
-    user = testData.userService.getUser(user.getId());
+    user = userService.getUser(user.getId());
     assertThat(user.isBlocked(), equalTo(true));
   }
 
   @DisplayName("unblock should unblock the user")
   @Test
   public void shouldUnlockUser() {
-    var user = testData.user1();
-//    testData.userService.block(user.getId());
+    var user = testData.user2();
+    userService.block(user.getId());
 
     //@formatter:off
     given()
@@ -207,7 +216,7 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .then().statusCode(NO_CONTENT.value());
     //@formatter:on
 
-    assertThat(user.isBlocked(), equalTo(false));
+    assertEquals(userService.getUser(user.getId()).isBlocked(), false);
   }
 
   @DisplayName("unblock should return 404 when user is not found")
@@ -268,5 +277,6 @@ public class AuctionUserControllerTest extends IntegrationTest {
           .body("lastName", equalTo(createRequest.lastName()))
           .body("organisation", equalTo(createRequest.organisation()));
     //@formatter:on
+    userService.getUser(createRequest.username());
   }
 }

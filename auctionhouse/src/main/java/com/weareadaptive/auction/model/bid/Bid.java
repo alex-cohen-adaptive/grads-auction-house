@@ -1,15 +1,16 @@
 package com.weareadaptive.auction.model.bid;
 
 import com.weareadaptive.auction.exception.business.BusinessException;
-
-import javax.persistence.*;
-
-import com.weareadaptive.auction.model.auction.Auction;
-import com.weareadaptive.auction.model.user.AuctionUser;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 
 @Entity
@@ -31,10 +32,10 @@ public class Bid {
   @Column(name = "state")
   private String state;
 
-  @Column(name = "owner")
-  private String owner;
+  @Column(name = "username")
+  private String username;
 
-  @Column(name = "acution_id")
+  @Column(name = "auction_id")
   private int auctionId;
 
   @Column(name = "win_quantity")
@@ -45,7 +46,7 @@ public class Bid {
   }
 
   public String getAuctionUser() {
-    return owner;
+    return username;
   }
 
   public double getPrice() {
@@ -60,16 +61,15 @@ public class Bid {
     return state;
   }
 
- /* public void lost() {
-    if (state != State.PENDING) {
+  public void lost() {
+    if (state.equals(State.PENDING.toString())) {
       throw new BusinessException("Must be a pending bid");
     }
-    state = State.LOST;
-  }*/
-/*
+    state = State.LOST.toString();
+  }
 
   public void win(int winQuantity) {
-    if (state != State.PENDING) {
+    if (state.equals(State.PENDING.toString())) {
       throw new BusinessException("Must be a pending bid");
     }
 
@@ -77,14 +77,13 @@ public class Bid {
       throw new BusinessException("winQuantity must be lower or equal to to the bid quantity");
     }
 
-    state = State.WIN;
+    state = State.WIN.toString();
     this.winQuantity = winQuantity;
   }
-*/
 
   @Override
   public String toString() {
-    return "user=" + owner
+    return "user=" + username
         + ", price=" + price
         + ", quantity=" + quantity;
   }

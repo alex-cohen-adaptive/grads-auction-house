@@ -7,11 +7,16 @@ import com.weareadaptive.auction.exception.NotAllowedException;
 import com.weareadaptive.auction.exception.NotFoundException;
 import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.repository.UserRepository;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Stream;
-
+//todo combine get user in a separte class
+//todo testing get from repository for checks if data correctly added
+// todo refactor repository methods for specific queries only
+//todo overall refactoring
+//todo refactor test data class
+//todo refactor instant errors for my tables dbms
 
 @Service
 public class UserService {
@@ -54,14 +59,15 @@ public class UserService {
     return user.get();
   }
 
-/*  private void userExists(int id) {
-    if (!userRepository.existsById(id)) {
+  public AuctionUser getUser(String username) {
+    var user = userRepository.getByUsername(username);
+    if (user.isEmpty()) {
       throw new NotFoundException("User not found!");
     }
-  }*/
+    return user.get();
+  }
 
   public void editUser(int id, UpdateUserRequest updateUserRequest) {
-//    userExists(id);
     getUser(id);
     userRepository.updateUserFirstNameLastNameOrganizationByUserId(
         id,

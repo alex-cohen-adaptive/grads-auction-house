@@ -5,9 +5,6 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
-import com.weareadaptive.auction.exception.auction.AuctionClose;
-import com.weareadaptive.auction.exception.auction.AuctionCreated;
-import com.weareadaptive.auction.exception.bid.BidException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,8 +43,8 @@ public class ExceptionHandlerControllerAdvice {
         NOT_FOUND);
   }
 
-  @ExceptionHandler(AuctionClose.class)
-  public ResponseEntity<Object> handleAuctionAlreadyClosed(AuctionClose ex) {
+  @ExceptionHandler(NotAllowedException.class)
+  public ResponseEntity<Object> handleAuctionAlreadyClosed(NotAllowedException ex) {
     var headers = new HttpHeaders();
     headers.setContentType(APPLICATION_PROBLEM_JSON);
     return new ResponseEntity<>(
@@ -72,31 +69,7 @@ public class ExceptionHandlerControllerAdvice {
         BAD_REQUEST);
   }
 
-  @ExceptionHandler(AuctionCreated.class)
-  public ResponseEntity<Object> handleAlreadyCreatedAuction(AuctionCreated ex) {
-    var headers = new HttpHeaders();
-    headers.setContentType(APPLICATION_PROBLEM_JSON);
-    return new ResponseEntity<>(
-        new Problem(
-            BAD_REQUEST.value(),
-            BAD_REQUEST.name(),
-            ex.getMessage()),
-        headers,
-        BAD_REQUEST);
-  }
 
-  @ExceptionHandler(BidException.class)
-  public ResponseEntity<Object> handleAlreadyCreatedAuction(BidException ex) {
-    var headers = new HttpHeaders();
-    headers.setContentType(APPLICATION_PROBLEM_JSON);
-    return new ResponseEntity<>(
-        new Problem(
-            FORBIDDEN.value(),
-            FORBIDDEN.name(),
-            ex.getMessage()),
-        headers,
-        FORBIDDEN);
-  }
 
 
 }

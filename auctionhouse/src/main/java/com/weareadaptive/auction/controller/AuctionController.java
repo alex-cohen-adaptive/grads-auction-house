@@ -58,7 +58,6 @@ public class AuctionController {
   }
 
 
-/*
   @PostMapping("{id}/bid")
   @ResponseStatus(HttpStatus.CREATED)
   public BidResponse bidAuction(@PathVariable @Valid int id,
@@ -68,11 +67,9 @@ public class AuctionController {
         auctionService.bid(
             principal,
             id,
-            createBidRequest.price(),
-            createBidRequest.quantity()
+            createBidRequest
         ));
   }
-*/
 
   @GetMapping("{id}/bids")
   @ResponseStatus(HttpStatus.OK)
@@ -92,7 +89,7 @@ public class AuctionController {
 
   @GetMapping("{id}/summary")
   @ResponseStatus(HttpStatus.OK)
-  public ClosingSummary getAuctionSummary(@PathVariable @Valid int id) {
+  public String getAuctionSummary(@PathVariable @Valid int id) {
     return auctionService.getAuctionSummary(id);
   }
 

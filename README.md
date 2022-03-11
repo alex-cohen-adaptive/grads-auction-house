@@ -18,7 +18,7 @@ bids, until there are no bids remaining.
 Users are broken down into regular users and admins
 
 Admins:
-    -Can create,delete,update, and read all user data
+    -Can create,delete,update, and read all auctionUser data
     -admins cannot participate in the auction directly
 Users:
     -can create an auction for peer users to bid, however 

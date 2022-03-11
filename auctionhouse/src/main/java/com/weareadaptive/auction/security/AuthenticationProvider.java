@@ -1,9 +1,9 @@
 package com.weareadaptive.auction.security;
 
-import java.util.Optional;
-import javax.validation.constraints.NotNull;
 
 import com.weareadaptive.auction.repository.UserRepository;
+import java.util.Optional;
+import javax.validation.constraints.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;

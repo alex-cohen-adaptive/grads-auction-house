@@ -1,14 +1,21 @@
 package com.weareadaptive.auction.repository;
 
 import com.weareadaptive.auction.model.auction.Auction;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
   boolean existsBySymbol(String symbol);
 
-  Optional<Auction> getBySymbol(String symbol);
+  @Query("select a from auction a where a.symbol = :symbol")
+  Optional<Auction> getBySymbol(@Param("symbol") String symbol);
 
-  Optional<Auction> getById(int id);
+  @Query("select a from auction a where a.id = :id ")
+  Optional<Auction> getById(@Param("id") int id);
+
+
+
+
 }

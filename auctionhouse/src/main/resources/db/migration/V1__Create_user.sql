@@ -1,12 +1,3 @@
--- CREATE TYPE STATUS AS ENUM ('OPEN','CLOSED');
-
-/*CREATE TYPE STATE AS ENUM ('PENDING','LOST','WIN');
-
-CREATE TABLE organization
-(
-    org_id SERIAL PRIMARY KEY,
-    name   VARCHAR(50) UNIQUE NOT NULL,
-);*/
 CREATE TABLE auctionuser
 (
     id           SERIAL PRIMARY KEY,
@@ -22,27 +13,23 @@ CREATE TABLE auctionuser
 CREATE TABLE auction
 (
     id              SERIAL PRIMARY KEY,
-    symbol          VARCHAR(5) UNIQUE                      NOT NULL,
-    quantity        BIGINT                                 NOT NULL,
-    min_price       DOUBLE PRECISION                       NOT NULL,
-    time_provider   TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-    status          VARCHAR(20)                            NOT NULL,
-    closing_summary TEXT,
-    owner           VARCHAR(50)                            NOT NULL REFERENCES auctionuser (username),
-    CONSTRAINT fk_auction_owner
-        FOREIGN KEY (owner)
-            REFERENCES auctionuser (username)
+    symbol          VARCHAR(5) UNIQUE NOT NULL,
+    quantity        BIGINT            NOT NULL,
+    min_price       DOUBLE PRECISION  NOT NULL,
+--     time_provider   TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    status          VARCHAR(20)       NOT NULL,
+    closing_summary varchar(1000),
+    owner           VARCHAR(50)       NOT NULL REFERENCES auctionuser (username)
 );
 
 CREATE TABLE bid
 (
-    bid_id       SERIAL PRIMARY KEY,
-    name         VARCHAR(50)                   NOT NULL,
+    id           SERIAL PRIMARY KEY,
     quantity     BIGINT                        NOT NULL,
     price        DOUBLE PRECISION              NOT NULL,
     state        VARCHAR(20) DEFAULT 'PENDING' NOT NULL,
     win_quantity BIGINT      DEFAULT 0,
-    username     SERIAL                        NOT NULL REFERENCES auctionUser (id),
+    username     VARCHAR(50)                   NOT NULL REFERENCES auctionUser (username),
     auction_id   SERIAL                        NOT NULL REFERENCES auction (id)
 );
 

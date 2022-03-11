@@ -15,18 +15,23 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
 import com.weareadaptive.auction.dto.request.CreateBidRequest;
+import com.weareadaptive.auction.service.AuctionService;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AuctionControllerTest extends IntegrationTest {
+
+  @Autowired
+  private AuctionService auctionService;
 
   public static final String END_POINT = "/auctions";
 
@@ -43,8 +48,6 @@ class AuctionControllerTest extends IntegrationTest {
         testData.auction1().getSymbol(),
         (float) testData.auction1().getMinPrice(),
         testData.auction1().getQuantity());
-//    System.out.println(testData.user1Token());
-//    System.out.println(testData.userService.getUser(testData.user1().getId()));
 
     //@formatter:off
     given()
@@ -87,6 +90,10 @@ class AuctionControllerTest extends IntegrationTest {
         .body("quantity", equalTo(createRequest.quantity())
         );
     //@formatter:on
+    Assertions.assertEquals(
+        auctionService.getAuction(name).getQuantity(),
+        createRequest.quantity()
+    );
   }
 
 
@@ -177,7 +184,7 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(NOT_FOUND.value())
-        .body("message", containsString("Not Found!"));
+        .body("message", containsString("not found!"));
     //@formatter:on
   }
 
@@ -212,7 +219,7 @@ class AuctionControllerTest extends IntegrationTest {
         .log().all()
         .statusCode(HttpStatus.OK.value())
         .body("id", equalTo(testData.auction1().getId()))
-        .body("owner", equalTo(testData.auction1().getId()))
+        .body("owner", equalTo(testData.auction1().getOwner()))
         .body("symbol", equalTo(testData.auction1().getSymbol()))
         .body("quantity", equalTo(testData.auction1().getQuantity()))
         .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
@@ -373,7 +380,7 @@ class AuctionControllerTest extends IntegrationTest {
   void getAllBids_shouldReturnIfExists() {
     var bid = testData.bid1();
     var user = testData.user4();
-    var auctionId = testData.auction1().getId();
+    var auctionId = testData.auction2().getId();
 
     //@formatter:off
     given()
@@ -429,7 +436,7 @@ class AuctionControllerTest extends IntegrationTest {
 
   @Test
   void close_shouldReturn_403_IfNotOwner() {
-    var auctionId = testData.auction1().getId();
+    var auctionId = testData.auction2().getId();
 
     //@formatter:off
     given()
@@ -448,7 +455,7 @@ class AuctionControllerTest extends IntegrationTest {
 
   @Test
   void close_shouldReturn_403_IfAlreadyClosed() {
-    var auctionId = testData.auction4().getId();
+    var auctionId = testData.auction3().getId();
 
     //@formatter:off
     given()
@@ -461,13 +468,13 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(FORBIDDEN.value())
-        .body("message", containsString("already closed"));
+        .body("message", containsString("is closed"));
   }
 
 
   @Test
   void getAuctionSummary_shouldGetSummary() {
-    var auctionId = testData.auction4().getId();
+    var auctionId = testData.auction3().getId();
 
     //@formatter:off
     given()
@@ -497,6 +504,6 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(FORBIDDEN.value())
-        .body("message", containsString("must be closed"));
+        .body("message", containsString("open auction"));
   }
 }

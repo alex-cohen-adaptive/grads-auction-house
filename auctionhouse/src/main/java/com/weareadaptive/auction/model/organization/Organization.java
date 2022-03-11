@@ -35,5 +35,4 @@ public class Organization {
       name = "organization_name"
   )
   private String organisationName;
-//    private  List<User> users;
 }

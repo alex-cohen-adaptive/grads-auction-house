@@ -1,17 +1,15 @@
 package com.weareadaptive.auction;
 
 import com.github.javafaker.Faker;
-import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
-import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.bid.Bid;
 import com.weareadaptive.auction.model.user.AuctionUser;
-import com.weareadaptive.auction.service.AuctionService;
-import com.weareadaptive.auction.service.UserService;
-
+import com.weareadaptive.auction.repository.AuctionRepository;
+import com.weareadaptive.auction.repository.BidRepository;
+import com.weareadaptive.auction.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -24,9 +22,14 @@ public class TestData {
   public static final String USER_AUTH_TOKEN = "Bearer USER:userpassword";
   public static final int MAX_SIZE = 4;
   private static int count = 1;
-  public final UserService userService;
-  private final AuctionService auctionService;
   private final Faker faker;
+
+  @Autowired
+  UserRepository userRepository;
+  @Autowired
+  AuctionRepository auctionRepository;
+  @Autowired
+  BidRepository bidRepository;
 
   private final List<AuctionUser> auctionUsers = new ArrayList<>(MAX_SIZE);
 
@@ -34,9 +37,7 @@ public class TestData {
 
   private final List<Bid> bids = new ArrayList<>(MAX_SIZE);
 
-  public TestData(UserService userService, AuctionService auctionService) {
-    this.userService = userService;
-    this.auctionService = auctionService;
+  public TestData() {
     faker = new Faker();
   }
 
@@ -48,10 +49,14 @@ public class TestData {
     for (int i = 0; i < MAX_SIZE; i++) {
       auctions.add(createRandomAuction());
     }
-/*    auctions.get(3).close();
+
+    var auction = auctionRepository.getById(3).get();
+    auction.close();
+    auctionRepository.save(auction);
+
     for (int i = 0; i < MAX_SIZE; i++) {
       bids.add(createRandomBid());
-    }*/
+    }
   }
 
   public AuctionUser user1() {
@@ -122,23 +127,28 @@ public class TestData {
 
   public AuctionUser createRandomUser() {
     var name = faker.name();
-    var userRequest = new CreateUserRequest(
-        name.username(),
-        PASSWORD,
-        name.firstName(),
-        name.lastName(),
-        faker.company().name()
-    );
-    return userService.create(userRequest);
+    var user = AuctionUser.builder()
+        .firstName(name.firstName())
+        .lastName(name.lastName())
+        .username(name.username())
+        .password(PASSWORD)
+        .organization(faker.company().name())
+        .build();
+    userRepository.save(user);
+    return user;
   }
 
   public Auction createRandomAuction() {
     var stock = faker.stock();
-    var auctionRequest = new CreateAuctionRequest(
-        stock.nsdqSymbol(),
-        (float) faker.number().randomDouble(1, 1, 300),
-        faker.number().randomDigitNotZero());
-    return auctionService.create(user4().getUsername(), auctionRequest);
+    var auction = Auction.builder()
+        .minPrice((float) faker.number().randomDouble(1, 1, 300))
+        .owner(user4().getUsername())
+        .quantity(faker.number().randomDigitNotZero())
+        .status("OPEN")
+        .symbol(stock.nsdqSymbol())
+        .build();
+    auctionRepository.save(auction);
+    return auction;
   }
 
   public int getRandomIndex() {
@@ -150,16 +160,15 @@ public class TestData {
     var index = getRandomIndex();
     var value = (count++) % 3;
     var priceIncrement = faker.number().randomDouble(1, 300, 600);
-/*    var bid = new Bid(
-        users.get(value),
-        faker.number().numberBetween(5, 200),
-        auctions.get(index).getMinPrice() + priceIncrement);
-    auctions.get(value).bid(
-        bid.getUser(),
-        bid.getQuantity(),
-        bid.getPrice());*/
-    return null;
-//    return bid;
+    var bid = Bid.builder()
+        .username(auctionUsers.get(value).getUsername())
+        .quantity(faker.number().numberBetween(5, 200))
+        .price(auctions.get(index).getMinPrice() + priceIncrement)
+        .state(auctionUsers.get(value).getUsername())
+        .auctionId(auctions.get(value).getId())
+        .build();
+    bidRepository.save(bid);
+    return bid;
   }
 
 
