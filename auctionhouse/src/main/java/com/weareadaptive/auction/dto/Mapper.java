@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.controller;
+package com.weareadaptive.auction.dto;
 
 import com.weareadaptive.auction.dto.response.AuctionResponse;
 import com.weareadaptive.auction.dto.response.BidResponse;
@@ -13,28 +13,32 @@ public class Mapper {
 
   public static UserResponse map(AuctionUser auctionUser) {
     return new UserResponse(
-      auctionUser.getId(),
-      auctionUser.getUsername(),
-      auctionUser.getFirstName(),
-      auctionUser.getLastName(),
-      auctionUser.getOrganization());
+        auctionUser.getId(),
+        auctionUser.getUsername(),
+        auctionUser.getFirstName(),
+        auctionUser.getLastName(),
+        auctionUser.getOrganization());
   }
 
   public static AuctionResponse map(Auction auction) {
     return new AuctionResponse(
-      auction.getId(),
-      auction.getOwner(),
-      auction.getSymbol(),
-      auction.getMinPrice(),
-      auction.getQuantity());
+        auction.getId(),
+        auction.getOwner(),
+        auction.getSymbol(),
+        auction.getMinPrice(),
+        auction.getQuantity(),
+        auction.getStatus(),
+        auction.getCloseTimestamp()
+    );
   }
 
 
   public static BidResponse map(Bid bid) {
     return new BidResponse(
-      bid.getAuctionUser(),
-      bid.getQuantity(),
-      bid.getPrice()
+        bid.getAuctionUser(),
+        bid.getState(),
+        bid.getQuantity(),
+        bid.getPrice()
     );
   }
 

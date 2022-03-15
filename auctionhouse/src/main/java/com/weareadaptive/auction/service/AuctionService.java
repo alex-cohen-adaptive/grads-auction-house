@@ -7,10 +7,9 @@ import static java.util.Comparator.comparingInt;
 
 import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
 import com.weareadaptive.auction.dto.request.CreateBidRequest;
-import com.weareadaptive.auction.exception.BadRequestException;
-import com.weareadaptive.auction.exception.NotAllowedException;
-import com.weareadaptive.auction.exception.NotFoundException;
-import com.weareadaptive.auction.exception.auction.AuctionClose;
+import com.weareadaptive.auction.exception.http.BadRequestException;
+import com.weareadaptive.auction.exception.http.NotAllowedException;
+import com.weareadaptive.auction.exception.http.NotFoundException;
 import com.weareadaptive.auction.model.auction.Auction;
 import com.weareadaptive.auction.model.auction.ClosingSummary;
 import com.weareadaptive.auction.model.bid.Bid;
@@ -30,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuctionService {
+
   @Autowired
   UserRepository userRepository;
 
@@ -71,7 +71,7 @@ public class AuctionService {
   }
 
   public Stream<Auction> getAllAuctions() {
-    return auctionRepository.findAll().stream();
+    return auctionRepository.getAllAuctions().stream();
   }
 
   public Bid bid(Principal principal, int auctionId, CreateBidRequest createBidRequest) {
@@ -113,10 +113,7 @@ public class AuctionService {
     if (!isOwner(auction, principal)) {
       throw new NotAllowedException("Only the owner can close his/her auction!");
     }
-    var closingSummary = close(auctionId);
-    auction.setClosingSummary(closingSummary.toString());
-    auctionRepository.save(auction);
-    return closingSummary;
+    return close(auction);
   }
 
   public String getAuctionSummary(int id) {
@@ -125,12 +122,12 @@ public class AuctionService {
     if (!auction.isClosed()) {
       throw new NotAllowedException("Error! cannot get a summary from an open auction!");
     }
+    System.out.println(auction.getClosingSummary());
     return auction.getClosingSummary();
 
   }
 
   /*====================Private Methods====================*/
-
 
   private void isClosed(Auction auction) {
     if (auction.isClosed()) {
@@ -151,16 +148,16 @@ public class AuctionService {
     return (getUser(principal).getUsername().equals(auction.getOwner()));
   }
 
-  private ClosingSummary close(int auctionId) {
-    var auction = getAuction(auctionId);
+  private ClosingSummary close(Auction auction) {
     if (auction.isClosed()) {
-      throw new AuctionClose("Cannot close because already closed.");
+      throw new NotAllowedException("Cannot close because already closed.");
     }
 
-    List<Bid> bids = bidRepository.getAllBidsByAuctionId(auctionId);
+    List<Bid> bids = bidRepository.getAllBidsByAuctionId(auction.getId());
 
 
     auction.close();
+
 
     var orderedBids = bids.stream().sorted(reverseOrder(comparing(Bid::getPrice))
         .thenComparing(reverseOrder(comparingInt(Bid::getQuantity)))).toList();
@@ -173,22 +170,48 @@ public class AuctionService {
         var bidQuantity = Math.min(availableQuantity, bid.getQuantity());
 
         winningBids.add(new WinningBid(bidQuantity, bid));
-        bid.win(bidQuantity);
+        win(bid, bidQuantity);
         availableQuantity -= bidQuantity;
         revenue = revenue.add(BigDecimal.valueOf(bidQuantity * bid.getPrice()));
       } else {
-        bid.lost();
+        lost(bid);
       }
+      bidRepository.save(bid);
     }
+    auction.setCloseTimestamp(Instant.now());
 
-    return
-        new ClosingSummary(
-            unmodifiableList(winningBids),
-            auction.getQuantity() - availableQuantity,
-            revenue,
-            Instant.now());
+    var summary = new ClosingSummary(
+        unmodifiableList(winningBids),
+        auction.getQuantity() - availableQuantity,
+        revenue,
+        auction.getCloseTimestamp());
+    auction.setClosingSummary(summary.toString());
+    auctionRepository.saveAndFlush(auction);
+    return summary;
+
 
   }
+
+  public void lost(Bid bid) {
+    if (bid.isPending()) {
+      throw new NotAllowedException("Must be a pending bid");
+    }
+    bid.setLost();
+  }
+
+  public void win(Bid bid, int winQuantity) {
+    if (bid.isPending()) {
+      throw new NotAllowedException("Must be a pending bid");
+    }
+
+    if (bid.getQuantity() < winQuantity) {
+      throw new NotAllowedException("winQuantity must be lower or equal to to the bid quantity");
+    }
+
+    bid.setWin();
+    bid.setWinQuantity(winQuantity);
+  }
+
 
   private void auctionExists(String symbol) {
     if (auctionRepository.existsBySymbol(symbol)) {

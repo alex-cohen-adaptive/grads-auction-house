@@ -1,7 +1,8 @@
 package com.weareadaptive.auction.controller;
 
-import static com.weareadaptive.auction.controller.Mapper.map;
+import static com.weareadaptive.auction.dto.Mapper.map;
 
+import com.weareadaptive.auction.dto.Mapper;
 import com.weareadaptive.auction.dto.request.CreateAuctionRequest;
 import com.weareadaptive.auction.dto.request.CreateBidRequest;
 import com.weareadaptive.auction.dto.response.AuctionResponse;

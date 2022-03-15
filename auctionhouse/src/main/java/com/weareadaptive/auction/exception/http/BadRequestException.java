@@ -1,4 +1,4 @@
-package com.weareadaptive.auction.exception;
+package com.weareadaptive.auction.exception.http;
 
 public class BadRequestException extends RuntimeException {
   public BadRequestException(String message) {

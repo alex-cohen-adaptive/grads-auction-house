@@ -32,7 +32,7 @@ public abstract class IntegrationTest {
           .withPassword("testPassword");
 
   @DynamicPropertySource
-  public static void postgreSQLProperties(@NotNull DynamicPropertyRegistry registry) {
+  public static void postgreSqlProperties(@NotNull DynamicPropertyRegistry registry) {
     registry.add("spring.datasource.url", postgreSQL::getJdbcUrl);
     registry.add("spring.datasource.username", postgreSQL::getUsername);
     registry.add("spring.datasource.password", postgreSQL::getPassword);

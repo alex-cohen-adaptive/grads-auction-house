@@ -2,21 +2,14 @@ package com.weareadaptive.auction.service;
 
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
-import com.weareadaptive.auction.exception.BadRequestException;
-import com.weareadaptive.auction.exception.NotAllowedException;
-import com.weareadaptive.auction.exception.NotFoundException;
+import com.weareadaptive.auction.exception.http.BadRequestException;
+import com.weareadaptive.auction.exception.http.NotAllowedException;
+import com.weareadaptive.auction.exception.http.NotFoundException;
 import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.repository.UserRepository;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-//todo combine get user in a separte class
-//todo testing get from repository for checks if data correctly added
-// todo refactor repository methods for specific queries only
-//todo overall refactoring
-//todo refactor test data class
-//todo refactor instant errors for my tables dbms
 
 @Service
 public class UserService {

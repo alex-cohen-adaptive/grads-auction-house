@@ -5,7 +5,6 @@ import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -84,22 +83,29 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(CREATED.value())
-        .body("id", greaterThan(0))
         .body("symbol", equalTo(createRequest.symbol()))
         .body("minPrice", equalTo(createRequest.minPrice()))
         .body("quantity", equalTo(createRequest.quantity())
         );
     //@formatter:on
+    var auction = auctionService.getAuction(name);
     Assertions.assertEquals(
-        auctionService.getAuction(name).getQuantity(),
+        auction.getQuantity(),
         createRequest.quantity()
     );
+    Assertions.assertEquals(
+        auction.getMinPrice(),
+        createRequest.minPrice()
+    );
+    Assertions.assertEquals(
+        auction.getSymbol(),
+        createRequest.symbol());
   }
 
 
   @DisplayName("Should return bad request if the user provides a negative/0 price for an auction ")
   @ParameterizedTest()
-  @ValueSource(strings = {" ", "", "     " })
+  @ValueSource(strings = {" ", "", "     "})
   public void create_shouldReturn_400_IfInvalidSymbol(String argument) {
     var name = faker.stock().nyseSymbol();
 
@@ -218,7 +224,6 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(HttpStatus.OK.value())
-        .body("id", equalTo(testData.auction1().getId()))
         .body("owner", equalTo(testData.auction1().getOwner()))
         .body("symbol", equalTo(testData.auction1().getSymbol()))
         .body("quantity", equalTo(testData.auction1().getQuantity()))
@@ -239,7 +244,6 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(HttpStatus.OK.value())
-        .body("id", equalTo(testData.auction1().getId()))
         .body("owner", equalTo(testData.auction1().getOwner()))
         .body("symbol", equalTo(testData.auction1().getSymbol()))
         .body("quantity", equalTo(testData.auction1().getQuantity()))
@@ -264,19 +268,15 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(HttpStatus.OK.value())
-        .body(find1 + "id", equalTo(testData.auction1().getId()))
         .body(find1 + "symbol", equalTo(testData.auction1().getSymbol()))
         .body(find1 + "quantity", equalTo(testData.auction1().getQuantity()))
         .body(find1 + "minPrice", equalTo((float) testData.auction1().getMinPrice()))
-        .body(find2 + "id", equalTo(testData.auction2().getId()))
         .body(find2 + "symbol", equalTo(testData.auction2().getSymbol()))
         .body(find2 + "quantity", equalTo(testData.auction2().getQuantity()))
         .body(find2 + "minPrice", equalTo((float) testData.auction2().getMinPrice()))
-        .body(find3 + "id", equalTo(testData.auction3().getId()))
         .body(find3 + "symbol", equalTo(testData.auction3().getSymbol()))
         .body(find3 + "quantity", equalTo(testData.auction3().getQuantity()))
         .body(find3 + "minPrice", equalTo((float) testData.auction3().getMinPrice()))
-        .body(find4 + "id", equalTo(testData.auction4().getId()))
         .body(find4 + "symbol", equalTo(testData.auction4().getSymbol()))
         .body(find4 + "quantity", equalTo(testData.auction4().getQuantity()))
         .body(find4 + "minPrice", equalTo((float) testData.auction4().getMinPrice()));
@@ -294,6 +294,7 @@ class AuctionControllerTest extends IntegrationTest {
     .when()
       .get("{id}")
     .then()
+        .log().all()
         .statusCode(FORBIDDEN.value());
     //@formatter:on
   }
@@ -321,6 +322,7 @@ class AuctionControllerTest extends IntegrationTest {
         .body("quantity", equalTo(bid.getQuantity()))
         .body("price", equalTo((float) bid.getPrice()));
     //@formatter:on
+
   }
 
 
@@ -346,7 +348,7 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(BAD_REQUEST.value())
-        .body("message", containsString("price needs to be above"));
+        .body("message", containsString("price must be "));
     //@formatter:on
   }
 
@@ -453,6 +455,27 @@ class AuctionControllerTest extends IntegrationTest {
 
   }
 
+
+  @DisplayName("get closed auction")
+  @Test
+  public void get_closedAuction() {
+    //@formatter:off
+    given()
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .pathParam("id", testData.auction1().getId())
+        .when()
+        .get("{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.OK.value())
+        .body("owner", equalTo(testData.auction1().getOwner()))
+        .body("symbol", equalTo(testData.auction1().getSymbol()))
+        .body("quantity", equalTo(testData.auction1().getQuantity()))
+        .body("minPrice", equalTo((float) testData.auction1().getMinPrice()));
+    //@formatter:on
+  }
+
   @Test
   void close_shouldReturn_403_IfAlreadyClosed() {
     var auctionId = testData.auction3().getId();
@@ -474,7 +497,8 @@ class AuctionControllerTest extends IntegrationTest {
 
   @Test
   void getAuctionSummary_shouldGetSummary() {
-    var auctionId = testData.auction3().getId();
+    var auctionId = testData.auction1().getId();
+
 
     //@formatter:off
     given()
@@ -487,6 +511,26 @@ class AuctionControllerTest extends IntegrationTest {
         .then()
         .log().all()
         .statusCode(OK.value());
+  }
+
+  @Test
+  void getAllBidsFromClosedAuction_shouldReturnIfExists() {
+    var bid = testData.bid1();
+    var user = testData.user4();
+    var auctionId = testData.auction1().getId();
+
+    //@formatter:off
+    given()
+        .baseUri(uri)
+        .header(AUTHORIZATION, testData.user4Token())
+        .contentType(ContentType.JSON)
+        .pathParam("id", auctionId)
+        .when()
+        .get("{id}/bids")
+        .then()
+        .log().all()
+        .statusCode(OK.value());
+    //@formatter:on
   }
 
   @Test

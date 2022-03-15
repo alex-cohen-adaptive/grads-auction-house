@@ -3,23 +3,22 @@ package com.weareadaptive.auction.controller;
 import static com.weareadaptive.auction.TestData.ADMIN_AUTH_TOKEN;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import com.weareadaptive.auction.TestData;
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
 import com.weareadaptive.auction.service.UserService;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,9 +58,6 @@ public class AuctionUserControllerTest extends IntegrationTest {
         .log().all()
         .statusCode(BAD_REQUEST.value())
         .body("message", containsString("already exist"));
-
-    assuserService.getUser(createRequest.username()));
-    ;
   }
 
   @DisplayName("getAll should return all users")
@@ -99,7 +95,11 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .pathParam("id", INVALID_ID)
       .when()
       .get("/users/{id}")
-      .then().statusCode(NOT_FOUND.value());
+      .then()
+        .log().all()
+        .statusCode(NOT_FOUND.value())
+        .body("message", containsString("not found"));
+    ;
     //@formatter:on
   }
 
@@ -113,13 +113,15 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .pathParam("id", INVALID_ID)
       .when()
       .get("/users/{id}")
-      .then().statusCode(UNAUTHORIZED.value());
+      .then()
+        .log().all()
+        .statusCode(FORBIDDEN.value());
     //@formatter:on
   }
 
   @DisplayName("get should return a user")
   @Test
-  public void shouldReturnUserIfExists() {
+  public void getUser_shouldReturnUserIfExists() {
     //@formatter:off
     given()
       .baseUri(uri)
@@ -134,6 +136,9 @@ public class AuctionUserControllerTest extends IntegrationTest {
           .body("lastName", equalTo(testData.user1().getLastName()))
           .body("organisation", equalTo(testData.user1().getOrganization()));
     //@formatter:on
+
+
+
   }
 
   @DisplayName("update should return 404 when user is not found")
@@ -147,14 +152,14 @@ public class AuctionUserControllerTest extends IntegrationTest {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .contentType(ContentType.JSON)
-      .pathParam("id", INVALID_ID)
-      .body(updateRequest)
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .contentType(ContentType.JSON)
+        .pathParam("id", INVALID_ID)
+        .body(updateRequest)
       .when()
-      .put("/users/{id}")
-          .then();
+        .put("/users/{id}")
+        .then().statusCode(NOT_FOUND.value());
     //@formatter:on
   }
 
@@ -170,16 +175,22 @@ public class AuctionUserControllerTest extends IntegrationTest {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .contentType(ContentType.JSON)
-      .pathParam("id", newUser.getId())
-      .body(updateRequest)
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .contentType(ContentType.JSON)
+        .pathParam("id", newUser.getId())
+        .body(updateRequest)
       .when()
-      .put("/users/{id}")
+        .put("/users/{id}")
       .then()
-      .statusCode(HttpStatus.OK.value());
+        .statusCode(HttpStatus.OK.value());
     //@formatter:on
+
+    var user = userService.getUser(newUser.getId());
+    Assertions.assertEquals(user.getFirstName(), updateRequest.firstName());
+    Assertions.assertEquals(user.getLastName(), updateRequest.lastName());
+    Assertions.assertEquals(user.getOrganization(), updateRequest.organisation());
+
   }
 
   @DisplayName("block should block the user")
@@ -189,15 +200,16 @@ public class AuctionUserControllerTest extends IntegrationTest {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .pathParam("id", user.getId())
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .pathParam("id", user.getId())
       .when()
-      .put("/users/{id}/block")
-      .then().statusCode(NO_CONTENT.value());
+        .put("/users/{id}/block")
+      .then().statusCode(NO_CONTENT.value())
+        .log().all();
     //@formatter:on
     user = userService.getUser(user.getId());
-    assertThat(user.isBlocked(), equalTo(true));
+    Assertions.assertTrue(user.isBlocked());
   }
 
   @DisplayName("unblock should unblock the user")
@@ -208,15 +220,18 @@ public class AuctionUserControllerTest extends IntegrationTest {
 
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .pathParam("id", user.getId())
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .pathParam("id", user.getId())
       .when()
-      .put("/users/{id}/unblock")
-      .then().statusCode(NO_CONTENT.value());
+        .put("/users/{id}/unblock")
+      .then()
+          .log().all()
+          .statusCode(NO_CONTENT.value());
+    ;
     //@formatter:on
 
-    assertEquals(userService.getUser(user.getId()).isBlocked(), false);
+    Assertions.assertEquals(userService.getUser(user.getId()).isBlocked(), false);
   }
 
   @DisplayName("unblock should return 404 when user is not found")
@@ -224,13 +239,13 @@ public class AuctionUserControllerTest extends IntegrationTest {
   public void shouldUnblockUserReturnNotFound() {
     //@formatter:off
     given()
-      .baseUri(uri)
-      .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
-      .pathParam("id", INVALID_ID)
+        .baseUri(uri)
+        .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
+        .pathParam("id", INVALID_ID)
       .when()
-      .put("/users/{id}/unblock")
-      .then()
-          .statusCode(NOT_FOUND.value());
+        .put("/users/{id}/unblock")
+      .then().log().all().statusCode(NOT_FOUND.value())
+        .body("message", containsString("not found"));
     //@formatter:on
   }
 
@@ -243,9 +258,10 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .header(AUTHORIZATION, ADMIN_AUTH_TOKEN)
       .pathParam("id", INVALID_ID)
       .when()
-      .put("/users/{id}/block")
+        .put("/users/{id}/block")
       .then()
-          .statusCode(NOT_FOUND.value());
+        .statusCode(NOT_FOUND.value())
+        .body("message", containsString("not found"));
     //@formatter:on
   }
 
@@ -274,9 +290,15 @@ public class AuctionUserControllerTest extends IntegrationTest {
       .statusCode(HttpStatus.CREATED.value())
           .body("id", greaterThan(0))
           .body("firstName", equalTo(createRequest.firstName()))
+          .body("username", equalTo(createRequest.username()))
           .body("lastName", equalTo(createRequest.lastName()))
           .body("organisation", equalTo(createRequest.organisation()));
     //@formatter:on
-    userService.getUser(createRequest.username());
+
+    var user = userService.getUser(createRequest.username());
+    assertEquals(user.getFirstName(), createRequest.firstName());
+    assertEquals(user.getUsername(), createRequest.username());
+    assertEquals(user.getLastName(), createRequest.lastName());
+    assertEquals(user.getOrganization(), createRequest.organisation());
   }
 }

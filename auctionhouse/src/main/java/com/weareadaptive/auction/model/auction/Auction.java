@@ -1,6 +1,6 @@
 package com.weareadaptive.auction.model.auction;
 
-import javax.persistence.Column;
+import java.time.Instant;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,29 +18,32 @@ import org.hibernate.annotations.ColumnDefault;
 public class Auction {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   int id;
 
-  @Column(name = "symbol")
   private String symbol;
 
-  @Column(name = "min_price")
   private double minPrice;
 
-  @Column(name = "quantity")
   private int quantity;
 
-  @ColumnDefault("OPEN")
-  private String status = "OPEN";
+  private String status;
 
-  @Column(name = "owner")
   private String owner;
 
-  @Column(name = "closing_summary")
   private String closingSummary;
+
+  private Instant closeTimestamp;
 
   public boolean isClosed() {
     return this.status.equals(Status.CLOSED.toString());
+  }
+
+  public Instant getCloseTimestamp() {
+    return closeTimestamp;
+  }
+
+  public void setCloseTimestamp(Instant closeTimestamp) {
+    this.closeTimestamp = closeTimestamp;
   }
 
   public void close() {

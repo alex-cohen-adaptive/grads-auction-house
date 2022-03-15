@@ -5,6 +5,9 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
+import com.weareadaptive.auction.exception.http.BadRequestException;
+import com.weareadaptive.auction.exception.http.NotAllowedException;
+import com.weareadaptive.auction.exception.http.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

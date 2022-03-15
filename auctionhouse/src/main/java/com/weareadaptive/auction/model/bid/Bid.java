@@ -1,7 +1,5 @@
 package com.weareadaptive.auction.model.bid;
 
-import com.weareadaptive.auction.exception.business.BusinessException;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 
 @Entity
 @Data
@@ -23,22 +19,16 @@ public class Bid {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   int id;
 
-  @Column(name = "quantity")
   private int quantity;
 
-  @Column(name = "price")
   private double price;
 
-  @Column(name = "state")
   private String state;
 
-  @Column(name = "username")
   private String username;
 
-  @Column(name = "auction_id")
   private int auctionId;
 
-  @Column(name = "win_quantity")
   private int winQuantity;
 
   public int getQuantity() {
@@ -61,24 +51,24 @@ public class Bid {
     return state;
   }
 
-  public void lost() {
-    if (state.equals(State.PENDING.toString())) {
-      throw new BusinessException("Must be a pending bid");
-    }
-    state = State.LOST.toString();
+  public void setWin() {
+    this.state = State.WIN.toString();
   }
 
-  public void win(int winQuantity) {
-    if (state.equals(State.PENDING.toString())) {
-      throw new BusinessException("Must be a pending bid");
-    }
+  public void setLost() {
+    this.state = State.LOST.toString();
+  }
 
-    if (quantity < winQuantity) {
-      throw new BusinessException("winQuantity must be lower or equal to to the bid quantity");
-    }
+  public boolean isPending() {
+    return this.state.equals(State.PENDING.toString());
+  }
 
-    state = State.WIN.toString();
-    this.winQuantity = winQuantity;
+  public boolean hasWon() {
+    return this.state.equals(State.PENDING.toString());
+  }
+
+  public boolean hasLost() {
+    return this.state.equals(State.PENDING.toString());
   }
 
   @Override

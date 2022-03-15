@@ -53,6 +53,9 @@ public class TestData {
     var auction = auctionRepository.getById(3).get();
     auction.close();
     auctionRepository.save(auction);
+    bidRepository.save(createRandomBid(3));
+    bidRepository.save(createRandomBid(3));
+    bidRepository.save(createRandomBid(3));
 
     for (int i = 0; i < MAX_SIZE; i++) {
       bids.add(createRandomBid());
@@ -164,6 +167,20 @@ public class TestData {
         .username(auctionUsers.get(value).getUsername())
         .quantity(faker.number().numberBetween(5, 200))
         .price(auctions.get(index).getMinPrice() + priceIncrement)
+        .state(auctionUsers.get(value).getUsername())
+        .auctionId(auctions.get(value).getId())
+        .build();
+    bidRepository.save(bid);
+    return bid;
+  }
+
+  public Bid createRandomBid(int auctionId) {
+    var value = (count++) % 3;
+    var priceIncrement = faker.number().randomDouble(1, 300, 600);
+    var bid = Bid.builder()
+        .username(auctionUsers.get(value).getUsername())
+        .quantity(faker.number().numberBetween(5, 200))
+        .price(auctions.get(auctionId).getMinPrice() + priceIncrement)
         .state(auctionUsers.get(value).getUsername())
         .auctionId(auctions.get(value).getId())
         .build();
