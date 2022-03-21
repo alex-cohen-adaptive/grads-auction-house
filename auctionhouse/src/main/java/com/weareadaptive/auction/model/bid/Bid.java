@@ -31,26 +31,6 @@ public class Bid {
 
   private int winQuantity;
 
-  public int getQuantity() {
-    return quantity;
-  }
-
-  public String getAuctionUser() {
-    return username;
-  }
-
-  public double getPrice() {
-    return price;
-  }
-
-  public int getWinQuantity() {
-    return winQuantity;
-  }
-
-  public String getState() {
-    return state;
-  }
-
   public void setWin() {
     this.state = State.WIN.toString();
   }
@@ -69,13 +49,6 @@ public class Bid {
 
   public boolean hasLost() {
     return this.state.equals(State.PENDING.toString());
-  }
-
-  @Override
-  public String toString() {
-    return "user=" + username
-        + ", price=" + price
-        + ", quantity=" + quantity;
   }
 
   public enum State {

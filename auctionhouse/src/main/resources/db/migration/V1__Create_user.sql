@@ -17,7 +17,6 @@ CREATE TABLE auction
     quantity        BIGINT            NOT NULL,
     min_price       DOUBLE PRECISION  NOT NULL,
     close_timestamp  TIMESTAMP WITH TIME ZONE,
---     time_provider   TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     status          VARCHAR(20)       NOT NULL,
     closing_summary varchar(1000),
     owner           VARCHAR(50)       NOT NULL REFERENCES auctionuser (username)

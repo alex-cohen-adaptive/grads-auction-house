@@ -38,14 +38,6 @@ public class Auction {
     return this.status.equals(Status.CLOSED.toString());
   }
 
-  public Instant getCloseTimestamp() {
-    return closeTimestamp;
-  }
-
-  public void setCloseTimestamp(Instant closeTimestamp) {
-    this.closeTimestamp = closeTimestamp;
-  }
-
   public void close() {
     this.status = Status.CLOSED.toString();
   }

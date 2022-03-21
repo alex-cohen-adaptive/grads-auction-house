@@ -138,7 +138,6 @@ public class AuctionUserControllerTest extends IntegrationTest {
     //@formatter:on
 
 
-
   }
 
   @DisplayName("update should return 404 when user is not found")

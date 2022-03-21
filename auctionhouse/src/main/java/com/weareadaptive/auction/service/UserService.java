@@ -3,7 +3,6 @@ package com.weareadaptive.auction.service;
 import com.weareadaptive.auction.dto.request.CreateUserRequest;
 import com.weareadaptive.auction.dto.request.UpdateUserRequest;
 import com.weareadaptive.auction.exception.http.BadRequestException;
-import com.weareadaptive.auction.exception.http.NotAllowedException;
 import com.weareadaptive.auction.exception.http.NotFoundException;
 import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.repository.UserRepository;
@@ -18,9 +17,11 @@ public class UserService {
 
 
   public AuctionUser create(CreateUserRequest userRequest) {
+
     if (userRepository.existsByUsername(userRequest.username())) {
       throw new BadRequestException("User already exists!");
     }
+
     AuctionUser auctionUser = AuctionUser.builder()
         .username(userRequest.username())
         .firstName(userRequest.firstName())
@@ -28,16 +29,10 @@ public class UserService {
         .organization(userRequest.organisation())
         .password(userRequest.password())
         .build();
-    userRepository.save(auctionUser);
-    return auctionUser;
-  }
 
-  public AuctionUser validate(String username, String password) {
-    var validated = userRepository.validate(username, password);
-    if (validated.isEmpty()) {
-      throw new NotAllowedException("Invalid Username or Password!");
-    }
-    return validated.get();
+    userRepository.save(auctionUser);
+
+    return auctionUser;
   }
 
   public Stream<AuctionUser> getAll() {
@@ -46,22 +41,29 @@ public class UserService {
 
   public AuctionUser getUser(int id) {
     var user = userRepository.findById(id);
+
     if (user.isEmpty()) {
       throw new NotFoundException("User not found!");
     }
+
     return user.get();
   }
 
   public AuctionUser getUser(String username) {
+
     var user = userRepository.getByUsername(username);
+
     if (user.isEmpty()) {
       throw new NotFoundException("User not found!");
     }
+
     return user.get();
   }
 
   public void editUser(int id, UpdateUserRequest updateUserRequest) {
+
     getUser(id);
+
     userRepository.updateUserFirstNameLastNameOrganizationByUserId(
         id,
         updateUserRequest.firstName(),
@@ -79,18 +81,22 @@ public class UserService {
   public void block(int id) {
     var user = getUser(id);
     isAdmin(user);
+
     if (user.isBlocked()) {
       throw new BadRequestException("User already blocked!");
     }
+
     userRepository.blockUser(id);
   }
 
   public void unblock(int id) {
     var user = getUser(id);
     isAdmin(user);
+
     if (!user.isBlocked()) {
       throw new BadRequestException("User already unblocked!");
     }
+
     userRepository.unblockUser(id);
   }
 }

@@ -36,29 +36,29 @@ public interface UserRepository extends JpaRepository<AuctionUser, Integer> {
           + "u.lastName = :lastName, "
           + "u.organization = :organization "
           + "WHERE u.id = :id")
-  int updateUserFirstNameLastNameOrganizationByUserId(
+  void updateUserFirstNameLastNameOrganizationByUserId(
       @Param("id") int id,
       @Param("firstName") String firstName,
       @Param("lastName") String lastName,
       @Param("organization") String organization);
 
-  @Modifying(flushAutomatically = true)
+  @Modifying()
   @Transactional
   @Query(
       value = "UPDATE auctionuser  u "
           + "SET  u.isBlocked = true "
           + "WHERE u.id = :id")
-  int blockUser(
+  void blockUser(
       @Param("id") int id);
 
 
-  @Modifying(flushAutomatically = true)
+  @Modifying()
   @Transactional
   @Query(
       value = "UPDATE auctionuser  u "
           + "SET  u.isBlocked = false "
           + "WHERE u.id = :id")
-  int unblockUser(
+  void unblockUser(
       @Param("id") int id);
 
 

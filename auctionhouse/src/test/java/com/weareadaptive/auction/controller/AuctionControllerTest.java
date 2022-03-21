@@ -47,6 +47,7 @@ class AuctionControllerTest extends IntegrationTest {
         testData.auction1().getSymbol(),
         (float) testData.auction1().getMinPrice(),
         testData.auction1().getQuantity());
+    System.out.println("hello world");
 
     //@formatter:off
     given()
@@ -550,4 +551,8 @@ class AuctionControllerTest extends IntegrationTest {
         .statusCode(FORBIDDEN.value())
         .body("message", containsString("open auction"));
   }
+
+
+
+
 }

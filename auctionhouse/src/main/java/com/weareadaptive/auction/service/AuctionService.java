@@ -18,12 +18,14 @@ import com.weareadaptive.auction.model.user.AuctionUser;
 import com.weareadaptive.auction.repository.AuctionRepository;
 import com.weareadaptive.auction.repository.BidRepository;
 import com.weareadaptive.auction.repository.UserRepository;
+
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,18 +33,19 @@ import org.springframework.stereotype.Service;
 public class AuctionService {
 
   @Autowired
-  UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
-  AuctionRepository auctionRepository;
-  public static final String AUCTION_LOT_ENTITY = "AuctionLot";
+  private AuctionRepository auctionRepository;
 
   @Autowired
-  BidRepository bidRepository;
+  private BidRepository bidRepository;
 
   public Auction create(Principal principal, CreateAuctionRequest createAuction) {
     auctionExists(createAuction.symbol());
+
     var username = principal.getName();
+
     Auction auction = Auction.builder()
         .minPrice(createAuction.minPrice())
         .quantity(createAuction.quantity())
@@ -50,23 +53,29 @@ public class AuctionService {
         .symbol(createAuction.symbol())
         .status(Auction.Status.OPENED.toString())
         .build();
+
     auctionRepository.save(auction);
+
     return auction;
   }
 
   public Auction getAuction(int id) {
     var auction = auctionRepository.getById(id);
+
     if (auction.isEmpty()) {
       throw new NotFoundException("Auction not found!");
     }
+
     return auction.get();
   }
 
   public Auction getAuction(String symbol) {
     var auction = auctionRepository.getBySymbol(symbol);
+
     if (auction.isEmpty()) {
       throw new NotFoundException("Auction not found!");
     }
+
     return auction.get();
   }
 
@@ -81,6 +90,7 @@ public class AuctionService {
     if (isOwner(auction, principal)) {
       throw new NotAllowedException("Owner cannot bid on his/her own auction!");
     }
+
     if (createBidRequest.price() < auction.getMinPrice()) {
       throw new BadRequestException("Invalid! Bid price must be >= auction price");
     }
@@ -100,9 +110,11 @@ public class AuctionService {
 
   public Stream<Bid> getAllBids(int auctionId, Principal principal) {
     var auction = getAuction(auctionId);
+
     if (!isOwner(auction, principal)) {
       throw new NotAllowedException("Only owner is allowed to get all bids");
     }
+
     return bidRepository.getAllBidsByAuctionId(auctionId).stream();
   }
 
@@ -122,9 +134,8 @@ public class AuctionService {
     if (!auction.isClosed()) {
       throw new NotAllowedException("Error! cannot get a summary from an open auction!");
     }
-    System.out.println(auction.getClosingSummary());
-    return auction.getClosingSummary();
 
+    return auction.getClosingSummary();
   }
 
   /*====================Private Methods====================*/
@@ -137,10 +148,13 @@ public class AuctionService {
 
   private AuctionUser getUser(Principal principal) {
     var username = principal.getName();
+
     var user = userRepository.getByUsername(username);
+
     if (user.isEmpty()) {
       throw new NotFoundException(String.format("User %s not found!", username));
     }
+
     return user.get();
   }
 
@@ -154,13 +168,12 @@ public class AuctionService {
     }
 
     List<Bid> bids = bidRepository.getAllBidsByAuctionId(auction.getId());
-
-
     auction.close();
+    var orderedBids = bids
+        .stream()
+        .sorted(reverseOrder(comparing(Bid::getPrice))
+            .thenComparing(reverseOrder(comparingInt(Bid::getQuantity)))).toList();
 
-
-    var orderedBids = bids.stream().sorted(reverseOrder(comparing(Bid::getPrice))
-        .thenComparing(reverseOrder(comparingInt(Bid::getQuantity)))).toList();
     var availableQuantity = auction.getQuantity();
     var revenue = BigDecimal.ZERO;
     var winningBids = new ArrayList<WinningBid>();
@@ -178,6 +191,7 @@ public class AuctionService {
       }
       bidRepository.save(bid);
     }
+
     auction.setCloseTimestamp(Instant.now());
 
     var summary = new ClosingSummary(
@@ -185,17 +199,18 @@ public class AuctionService {
         auction.getQuantity() - availableQuantity,
         revenue,
         auction.getCloseTimestamp());
+
     auction.setClosingSummary(summary.toString());
     auctionRepository.saveAndFlush(auction);
     return summary;
-
-
   }
 
   public void lost(Bid bid) {
+
     if (bid.isPending()) {
       throw new NotAllowedException("Must be a pending bid");
     }
+
     bid.setLost();
   }
 
@@ -212,8 +227,8 @@ public class AuctionService {
     bid.setWinQuantity(winQuantity);
   }
 
-
   private void auctionExists(String symbol) {
+
     if (auctionRepository.existsBySymbol(symbol)) {
       throw new BadRequestException("Auction already exists!");
     }

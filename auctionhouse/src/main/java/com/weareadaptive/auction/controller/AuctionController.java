@@ -9,9 +9,11 @@ import com.weareadaptive.auction.dto.response.AuctionResponse;
 import com.weareadaptive.auction.dto.response.BidResponse;
 import com.weareadaptive.auction.model.auction.ClosingSummary;
 import com.weareadaptive.auction.service.AuctionService;
+
 import java.security.Principal;
 import java.util.stream.Stream;
 import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +51,7 @@ public class AuctionController {
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public AuctionResponse getAuction(@PathVariable @Valid int id) {
+
     return map(auctionService.getAuction(id));
   }
 
@@ -76,7 +79,8 @@ public class AuctionController {
   @ResponseStatus(HttpStatus.OK)
   public Stream<BidResponse> getAllBids(@PathVariable @Valid int id,
                                         Principal principal) {
-    return auctionService.getAllBids(id, principal)
+    return auctionService
+        .getAllBids(id, principal)
         .map(Mapper::map);
   }
 
@@ -84,6 +88,7 @@ public class AuctionController {
   @ResponseStatus(HttpStatus.OK)
   public ClosingSummary closeAuction(@PathVariable @Valid int id,
                                      Principal principal) {
+
     return auctionService.closeAuction(id, principal);
   }
 
@@ -91,6 +96,7 @@ public class AuctionController {
   @GetMapping("{id}/summary")
   @ResponseStatus(HttpStatus.OK)
   public String getAuctionSummary(@PathVariable @Valid int id) {
+
     return auctionService.getAuctionSummary(id);
   }
 

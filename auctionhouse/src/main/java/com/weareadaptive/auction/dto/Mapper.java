@@ -35,7 +35,7 @@ public class Mapper {
 
   public static BidResponse map(Bid bid) {
     return new BidResponse(
-        bid.getAuctionUser(),
+        bid.getUsername(),
         bid.getState(),
         bid.getQuantity(),
         bid.getPrice()
